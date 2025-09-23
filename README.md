@@ -21,7 +21,7 @@ cd Implementation/greenpath
 npm install
 npm run dev
 
-# Repository Structure
+## Repository Structure
  /Documents – Proposals, progress/midterm/final reports
  /Implementation – All source code
 
