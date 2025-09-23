@@ -13,9 +13,15 @@ GreenPath is an applied-research project featuring:
 React frontend (categories + chatbot)
 Node/Express backend (AWS Lambda + API Gateway)
 PostgreSQL (Amazon RDS) for data
-Sustainability analytics dashboard (Recharts)
+Sustainability analytics dashboard (Recharts) using Kaggle CO₂ Emissions (Saloni1712).
+
+## Run Locally
+```bash
+cd Implementation/greenpath
+npm install
+npm run dev
 
 ## Repository Structure
- /Documents – Proposals, progress/midterm/final reports, diagrams
+ /Documents – Proposals, progress/midterm/final reports
  /Implementation – All source code
 
