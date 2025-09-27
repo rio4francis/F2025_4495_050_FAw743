@@ -1,10 +1,8 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-//import ChartFromCsv from "./components/ChartFromCsv";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function App() {
   const link = "hover:underline";
   const active = "font-semibold underline";
-  const location = useLocation();
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -19,10 +17,7 @@ export default function App() {
       </header>
 
       <main className="max-w-5xl mx-auto p-4" role="main">
-        {/* Render route content */}
         <Outlet />
-
-       
       </main>
 
       <footer className="max-w-5xl mx-auto p-4 mt-8 border-t">
