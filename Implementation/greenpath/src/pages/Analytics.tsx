@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import Papa from "papaparse";
+import { useEffect, useMemo, useRef, useState } from "react";
+import * as Papa from "papaparse";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, Label,
@@ -7,161 +7,166 @@ import {
 
 type AnyRow = Record<string, any>;
 type WideRow = { year: number } & Record<string, number | null>;
-
 const CSV_URL = "/data/dataset.csv";
 
-// fallback, used if CSV fails or aggregates to nothing
-const fallback: WideRow[] = [
-  { year: 2018, Transport: 0.96, Power: 1.12 },
-  { year: 2019, Transport: 1.02, Power: 1.15 },
-  { year: 2020, Transport: 0.88, Power: 1.05 },
-  { year: 2021, Transport: 1.10, Power: 1.18 },
-  { year: 2022, Transport: 1.15, Power: 1.21 },
+const palette = [
+  "#8884d8","#82ca9d","#ff7300","#00C49F","#FF8042","#0088FE",
+  "#A28FD0","#FFBB28","#00B8D9","#FF5A76","#7CB342","#AB47BC",
+  "#26C6DA","#FF7043"
 ];
 
+// country -> sector -> year -> value
+type Agg = Map<string, Map<string, Map<number, number>>>;
+
 export default function Analytics() {
-  const [rows, setRows] = useState<AnyRow[]>([]);
+  const [agg, setAgg] = useState<Agg>(new Map());
+  const [countries, setCountries] = useState<string[]>([]);
+  const [sectorsAll, setSectorsAll] = useState<Set<string>>(new Set());
+  const [country, setCountry] = useState<string>("");
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const didRun = useRef(false); // prevent StrictMode double-run in dev
 
-  // 1) Load CSV once
+  // helpers
+  const toYear = (r: AnyRow): number | null => {
+    if (r.year != null) return Number(r.year);
+    if (r.Year != null) return Number(r.Year);
+    if (r.timestamp != null) return new Date(Number(r.timestamp) * 1000).getFullYear();
+    if (r.Timestamp != null) return new Date(Number(r.Timestamp) * 1000).getFullYear();
+    const dStr = r.date ?? r.Date;
+    if (dStr) {
+      const d = new Date(String(dStr));
+      return isNaN(d.getTime()) ? null : d.getFullYear();
+    }
+    return null;
+  };
+  const sectorOf = (r: AnyRow): string => String(r.sector ?? r.Sector ?? "").trim();
+  const countryOf = (r: AnyRow): string => String(r.country ?? r.Country ?? "").trim();
+  const valueOf = (r: AnyRow): number | null => {
+    const v = r.value ?? r.Value ?? null;
+    if (v == null) return null;
+    const n = typeof v === "string" ? Number(v.replace(/,/g, "")) : Number(v);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  // Stream parse once and aggregate into a tiny map
   useEffect(() => {
+    if (didRun.current) return;
+    didRun.current = true;
+
+    const A: Agg = new Map();
+    const cSet = new Set<string>();
+    const sSet = new Set<string>();
+
     Papa.parse<AnyRow>(CSV_URL, {
       download: true,
       header: true,
-      dynamicTyping: true,
+      worker: true,
       skipEmptyLines: true,
-      complete: (res) => {
-        const data = (res.data || []).filter(Boolean) as AnyRow[];
-        setRows(data);
-        // small one-time summary for debugging
-        try {
-          const keys = new Set<string>();
-          for (let i = 0; i < Math.min(3, data.length); i++) {
-            Object.keys(data[i]).forEach((k) => keys.add(k));
-          }
-          // eslint-disable-next-line no-console
-          console.log("[Analytics] sample keys:", Array.from(keys));
-        } catch {}
+      step: ({ data }) => {
+        const y = toYear(data);
+        const s = sectorOf(data);
+        const c = countryOf(data);
+        const v = valueOf(data);
+        if (y == null || !Number.isFinite(y) || !s || !c || v == null) return;
+
+        cSet.add(c);
+        sSet.add(s);
+
+        let bySector = A.get(c);
+        if (!bySector) { bySector = new Map(); A.set(c, bySector); }
+        let byYear = bySector.get(s);
+        if (!byYear) { byYear = new Map(); bySector.set(s, byYear); }
+        byYear.set(y, (byYear.get(y) ?? 0) + v);
+      },
+      complete: () => {
+        const list = Array.from(cSet).sort();
+        setAgg(A);
+        setCountries(list);
+        setSectorsAll(sSet);
+        // set a sensible default country (prefer WORLD, else US, else first)
+        const preferred = ["WORLD", "US", "EU27 & UK", "China", "India"];
+        const pick = preferred.find(p => list.includes(p)) ?? list[0] ?? "";
+        setCountry(pick);
         setLoading(false);
       },
       error: (e) => {
-        setErr(e.message || "Failed to load CSV");
-        setRows([]);
+        setErr(e.message || "Failed to parse CSV");
         setLoading(false);
       },
     });
   }, []);
 
-  // 2) Transform to wide: pick top 2 sectors by total value
-  const { wideData, sectorKeys } = useMemo(() => {
-    if (!rows.length) return { wideData: [] as WideRow[], sectorKeys: [] as string[] };
+  // Build wide rows for the selected country: {year, Power, Industry, Transport, ...}
+  const { dataWide, sectorKeys } = useMemo(() => {
+    if (!country || !agg.has(country)) return { dataWide: [] as WideRow[], sectorKeys: [] as string[] };
 
-    // Try to detect year
-    const toYear = (r: AnyRow): number | null => {
-      if (r.year != null) return Number(r.year);
-      if (r.Year != null) return Number(r.Year);
-      if (r.timestamp != null) return new Date(Number(r.timestamp) * 1000).getFullYear();
-      if (r.Timestamp != null) return new Date(Number(r.Timestamp) * 1000).getFullYear();
-      if (r.date) {
-        const d = new Date(String(r.date));
-        if (!isNaN(d.getTime())) return d.getFullYear();
-      }
-      if (r.Date) {
-        const d = new Date(String(r.Date));
-        if (!isNaN(d.getTime())) return d.getFullYear();
-      }
-      return null;
-    };
+    const bySector = agg.get(country)!; // Map<sector, Map<year, value>>
+    const sectors = Array.from(bySector.keys()).sort();
 
-    // Sector/name
-    const sectorOf = (r: AnyRow): string | null => {
-      const s = (r.sector ?? r.Sector ?? r.category ?? r.Category ?? "").toString().trim();
-      return s ? s : null;
-    };
+    // choose up to 5 sectors to keep chart readable (or lock to known ones)
+    const preferred = ["Power","Industry","Transport","Buildings","Agriculture"];
+    const ordered = [
+      ...preferred.filter(s => sectors.includes(s)),
+      ...sectors.filter(s => !preferred.includes(s)),
+    ];
+    const keep = ordered.slice(0, 5);
 
-    // Value
-    const toValue = (r: AnyRow): number | null => {
-      const v = r.value ?? r.Value ?? r.amount ?? r.Amount;
-      if (v == null) return null;
-      const n = typeof v === "string" ? Number(v.replace(/,/g, "")) : Number(v);
-      return Number.isFinite(n) ? n : null;
-    };
-
-    // Compute totals by sector to select top 2
-    const totals = new Map<string, number>();
-    for (const r of rows) {
-      const s = sectorOf(r);
-      const v = toValue(r);
-      if (!s || v == null) continue;
-      totals.set(s, (totals.get(s) ?? 0) + v);
+    // collect all years for this country across kept sectors
+    const yearSet = new Set<number>();
+    for (const s of keep) {
+      for (const y of (bySector.get(s)?.keys() ?? [])) yearSet.add(y);
     }
-    const sortedSectors = Array.from(totals.entries())
-      .sort((a, b) => b[1] - a[1])
-      .map(([s]) => s);
+    const years = Array.from(yearSet).sort((a,b) => a - b);
 
-    const chosen = sortedSectors.slice(0, 2);
-    // If not enough sectors detected, fall back to common names
-    if (chosen.length < 2) {
-      if (!chosen.includes("power")) chosen.push("power");
-      if (!chosen.includes("transport")) chosen.push("transport");
-    }
-    const sectorKeys = chosen.slice(0, 2);
-
-    // Pivot by year -> wide rows
-    const byYear = new Map<number, WideRow>();
-    for (const r of rows) {
-      const y = toYear(r);
-      if (y == null || !Number.isFinite(y)) continue;
-      const s = sectorOf(r);
-      const v = toValue(r);
-      if (!s || v == null) continue;
-
-      if (!byYear.has(y)) {
-        const base: WideRow = { year: y };
-        for (const k of sectorKeys) base[k] = null;
-        byYear.set(y, base);
+    const rows: WideRow[] = years.map(y => {
+      const r: WideRow = { year: y };
+      for (const s of keep) {
+        r[s] = bySector.get(s)?.get(y) ?? null;
       }
-      if (sectorKeys.includes(s)) {
-        const obj = byYear.get(y)!;
-        obj[s] = v;
-      }
-    }
+      return r;
+    });
 
-    const wide = Array.from(byYear.values()).sort((a, b) => a.year - b.year);
-    return { wideData: wide, sectorKeys };
-  }, [rows]);
+    return { dataWide: rows, sectorKeys: keep };
+  }, [agg, country]);
 
   const fmt = new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   if (loading) return <div className="p-4">Loading…</div>;
 
-  const dataToShow = wideData.length ? wideData : fallback;
-  const lines = (sectorKeys.length ? sectorKeys : Object.keys(fallback[0]).filter(k => k !== "year"))
-    .map((key, i) => ({
-      key,
-      stroke: i === 0 ? "#8884d8" : "#82ca9d",
-    }));
-
   return (
     <section aria-labelledby="analytics-heading">
       <h1 id="analytics-heading" className="text-2xl font-semibold mb-2">Emissions Analytics</h1>
       <p className="text-gray-700 mb-4">
-        Values shown in <strong>GtCO₂</strong>.
-        {err ? <span className="text-red-600"> (Note: {err})</span> : null}
+        Select a country to compare sectors over time. Values shown in <strong>GtCO₂</strong>.{" "}
+        {err ? <span className="text-red-600">(Note: {err})</span> : null}
       </p>
 
-      <div style={{ height: 360, width: "100%" }}>
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-3 mb-3">
+        <label className="flex items-center gap-2">
+          <span className="text-sm font-medium">Country:</span>
+          <select
+            className="border rounded px-2 py-1"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          >
+            {countries.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </label>
+        <span className="text-xs text-gray-500">
+          Sectors detected: {sectorsAll.size}
+        </span>
+      </div>
+
+      <div style={{ height: 420, width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={dataToShow} margin={{ left: 12, right: 12, top: 8, bottom: 28 }}>
+          <LineChart data={dataWide} margin={{ left: 12, right: 12, top: 8, bottom: 28 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" tickMargin={8}>
               <Label value="Year" position="insideBottom" offset={-18} />
             </XAxis>
-            <YAxis
-              width={80}
-              tickFormatter={(v: number) => fmt.format(Number(v))}
-            >
+            <YAxis width={84} tickFormatter={(v: number) => fmt.format(Number(v))}>
               <Label
                 value="Emissions (GtCO₂)"
                 angle={-90}
@@ -171,19 +176,19 @@ export default function Analytics() {
               />
             </YAxis>
             <Tooltip
-              formatter={(value: any) => `${fmt.format(Number(value))} GtCO₂`}
+              formatter={(value: any, name: any) => [`${fmt.format(Number(value))} GtCO₂`, name]}
               labelFormatter={(label: any) => `Year: ${label}`}
             />
-            <Legend verticalAlign="bottom" height={36} />
-            {lines.map(({ key, stroke }) => (
+            <Legend verticalAlign="bottom" height={36} wrapperStyle={{ paddingTop: 8 }} />
+            {sectorKeys.map((s, i) => (
               <Line
-                key={key}
+                key={s}
                 type="monotone"
-                dataKey={key}
-                stroke={stroke}
+                dataKey={s}
+                stroke={palette[i % palette.length]}
                 strokeWidth={2}
-                dot={{ r: 3 }}
-                activeDot={{ r: 5 }}
+                dot={{ r: 2 }}
+                activeDot={{ r: 4 }}
                 connectNulls
               />
             ))}
