@@ -1,0 +1,505 @@
+country,sector,year,value
+Brazil,Domestic aviation,2018,0.02
+Brazil,Domestic aviation,2019,10.08
+Brazil,Domestic aviation,2020,6.07
+Brazil,Domestic aviation,2021,8.66
+Brazil,Domestic aviation,2022,10.87
+Brazil,Domestic aviation,2023,4.76
+Brazil,Ground transport,2018,0.20
+Brazil,Ground transport,2019,171.22
+Brazil,Ground transport,2020,144.87
+Brazil,Ground transport,2021,162.44
+Brazil,Ground transport,2022,169.36
+Brazil,Ground transport,2023,69.42
+Brazil,Industry,2018,0.22
+Brazil,Industry,2019,130.11
+Brazil,Industry,2020,124.01
+Brazil,Industry,2021,129.33
+Brazil,Industry,2022,128.93
+Brazil,Industry,2023,49.74
+Brazil,International aviation,2018,0.02
+Brazil,International aviation,2019,6.61
+Brazil,International aviation,2020,2.79
+Brazil,International aviation,2021,2.99
+Brazil,International aviation,2022,5.00
+Brazil,International aviation,2023,2.40
+Brazil,Power,2018,0.10
+Brazil,Power,2019,80.40
+Brazil,Power,2020,70.79
+Brazil,Power,2021,122.01
+Brazil,Power,2022,46.96
+Brazil,Power,2023,14.34
+Brazil,Residential,2018,0.10
+Brazil,Residential,2019,36.62
+Brazil,Residential,2020,36.62
+Brazil,Residential,2021,36.62
+Brazil,Residential,2022,36.62
+Brazil,Residential,2023,15.16
+China,Domestic aviation,2018,0.16
+China,Domestic aviation,2019,62.47
+China,Domestic aviation,2020,51.55
+China,Domestic aviation,2021,57.79
+China,Domestic aviation,2022,34.61
+China,Domestic aviation,2023,25.75
+China,Ground transport,2018,2.52
+China,Ground transport,2019,923.82
+China,Ground transport,2020,809.06
+China,Ground transport,2021,907.58
+China,Ground transport,2022,874.68
+China,Ground transport,2023,379.99
+China,Industry,2018,10.42
+China,Industry,2019,4103.01
+China,Industry,2020,4258.01
+China,Industry,2021,4370.86
+China,Industry,2022,4202.25
+China,Industry,2023,1697.79
+China,International aviation,2018,0.08
+China,International aviation,2019,31.44
+China,International aviation,2020,12.70
+China,International aviation,2021,10.99
+China,International aviation,2022,9.38
+China,International aviation,2023,4.71
+China,Power,2018,14.82
+China,Power,2019,4570.72
+China,Power,2020,4656.13
+China,Power,2021,5079.54
+China,Power,2022,5140.76
+China,Power,2023,2088.05
+China,Residential,2018,4.35
+China,Residential,2019,803.72
+China,Residential,2020,808.77
+China,Residential,2021,797.84
+China,Residential,2022,816.27
+China,Residential,2023,380.49
+EU27 & UK,Domestic aviation,2018,0.03
+EU27 & UK,Domestic aviation,2019,16.52
+EU27 & UK,Domestic aviation,2020,8.58
+EU27 & UK,Domestic aviation,2021,11.28
+EU27 & UK,Domestic aviation,2022,14.57
+EU27 & UK,Domestic aviation,2023,5.88
+EU27 & UK,Ground transport,2018,1.64
+EU27 & UK,Ground transport,2019,879.88
+EU27 & UK,Ground transport,2020,830.01
+EU27 & UK,Ground transport,2021,884.94
+EU27 & UK,Ground transport,2022,885.33
+EU27 & UK,Ground transport,2023,373.27
+EU27 & UK,Industry,2018,0.89
+EU27 & UK,Industry,2019,632.70
+EU27 & UK,Industry,2020,583.97
+EU27 & UK,Industry,2021,640.83
+EU27 & UK,Industry,2022,665.11
+EU27 & UK,Industry,2023,275.72
+EU27 & UK,International aviation,2018,0.38
+EU27 & UK,International aviation,2019,190.90
+EU27 & UK,International aviation,2020,78.37
+EU27 & UK,International aviation,2021,98.87
+EU27 & UK,International aviation,2022,163.15
+EU27 & UK,International aviation,2023,66.31
+EU27 & UK,Power,2018,1.89
+EU27 & UK,Power,2019,933.79
+EU27 & UK,Power,2020,806.55
+EU27 & UK,Power,2021,888.80
+EU27 & UK,Power,2022,929.99
+EU27 & UK,Power,2023,309.39
+EU27 & UK,Residential,2018,2.58
+EU27 & UK,Residential,2019,621.95
+EU27 & UK,Residential,2020,609.18
+EU27 & UK,Residential,2021,657.30
+EU27 & UK,Residential,2022,608.48
+EU27 & UK,Residential,2023,325.10
+France,Domestic aviation,2018,0.00
+France,Domestic aviation,2019,2.33
+France,Domestic aviation,2020,1.29
+France,Domestic aviation,2021,1.73
+France,Domestic aviation,2022,1.94
+France,Domestic aviation,2023,0.72
+France,Ground transport,2018,0.21
+France,Ground transport,2019,116.66
+France,Ground transport,2020,105.02
+France,Ground transport,2021,118.27
+France,Ground transport,2022,118.85
+France,Ground transport,2023,49.62
+France,Industry,2018,0.06
+France,Industry,2019,61.71
+France,Industry,2020,54.71
+France,Industry,2021,58.09
+France,Industry,2022,58.94
+France,Industry,2023,24.83
+France,International aviation,2018,0.04
+France,International aviation,2019,20.11
+France,International aviation,2020,8.81
+France,International aviation,2021,11.52
+France,International aviation,2022,17.89
+France,International aviation,2023,7.41
+France,Power,2018,0.05
+France,Power,2019,29.46
+France,Power,2020,26.90
+France,Power,2021,28.50
+France,Power,2022,34.29
+France,Power,2023,11.77
+France,Residential,2018,0.33
+France,Residential,2019,79.93
+France,Residential,2020,76.07
+France,Residential,2021,83.46
+France,Residential,2022,75.74
+France,Residential,2023,41.24
+Germany,Domestic aviation,2018,0.00
+Germany,Domestic aviation,2019,2.12
+Germany,Domestic aviation,2020,1.02
+Germany,Domestic aviation,2021,0.92
+Germany,Domestic aviation,2022,1.15
+Germany,Domestic aviation,2023,0.50
+Germany,Ground transport,2018,0.20
+Germany,Ground transport,2019,150.56
+Germany,Ground transport,2020,149.15
+Germany,Ground transport,2021,150.33
+Germany,Ground transport,2022,149.64
+Germany,Ground transport,2023,62.36
+Germany,Industry,2018,0.11
+Germany,Industry,2019,124.16
+Germany,Industry,2020,113.00
+Germany,Industry,2021,118.38
+Germany,Industry,2022,117.99
+Germany,Industry,2023,49.52
+Germany,International aviation,2018,0.05
+Germany,International aviation,2019,28.79
+Germany,International aviation,2020,13.07
+Germany,International aviation,2021,16.55
+Germany,International aviation,2022,23.98
+Germany,International aviation,2023,9.66
+Germany,Power,2018,0.32
+Germany,Power,2019,243.39
+Germany,Power,2020,204.44
+Germany,Power,2021,239.13
+Germany,Power,2022,258.20
+Germany,Power,2023,89.05
+Germany,Residential,2018,0.55
+Germany,Residential,2019,138.44
+Germany,Residential,2020,134.07
+Germany,Residential,2021,150.24
+Germany,Residential,2022,134.65
+Germany,Residential,2023,75.31
+India,Domestic aviation,2018,0.02
+India,Domestic aviation,2019,7.20
+India,Domestic aviation,2020,3.90
+India,Domestic aviation,2021,5.18
+India,Domestic aviation,2022,6.44
+India,Domestic aviation,2023,2.93
+India,Ground transport,2018,0.82
+India,Ground transport,2019,299.64
+India,Ground transport,2020,258.14
+India,Ground transport,2021,268.88
+India,Ground transport,2022,290.64
+India,Ground transport,2023,120.52
+India,Industry,2018,2.07
+India,Industry,2019,751.14
+India,Industry,2020,655.90
+India,Industry,2021,744.54
+India,Industry,2022,773.61
+India,Industry,2023,333.05
+India,International aviation,2018,0.03
+India,International aviation,2019,12.05
+India,International aviation,2020,5.55
+India,International aviation,2021,6.05
+India,International aviation,2022,10.49
+India,International aviation,2023,5.02
+India,Power,2018,3.35
+India,Power,2019,1197.60
+India,Power,2020,1139.74
+India,Power,2021,1278.22
+India,Power,2022,1390.88
+India,Power,2023,655.34
+India,Residential,2018,1.67
+India,Residential,2019,204.33
+India,Residential,2020,201.62
+India,Residential,2021,184.50
+India,Residential,2022,191.19
+India,Residential,2023,95.72
+Italy,Domestic aviation,2018,0.00
+Italy,Domestic aviation,2019,1.89
+Italy,Domestic aviation,2020,1.00
+Italy,Domestic aviation,2021,1.47
+Italy,Domestic aviation,2022,1.96
+Italy,Domestic aviation,2023,0.73
+Italy,Ground transport,2018,0.20
+Italy,Ground transport,2019,91.10
+Italy,Ground transport,2020,81.78
+Italy,Ground transport,2021,90.67
+Italy,Ground transport,2022,90.65
+Italy,Ground transport,2023,38.87
+Italy,Industry,2018,0.07
+Italy,Industry,2019,54.39
+Italy,Industry,2020,47.99
+Italy,Industry,2021,54.41
+Italy,Industry,2022,54.47
+Italy,Industry,2023,23.34
+Italy,International aviation,2018,0.03
+Italy,International aviation,2019,14.99
+Italy,International aviation,2020,4.82
+Italy,International aviation,2021,6.48
+Italy,International aviation,2022,11.59
+Italy,International aviation,2023,4.89
+Italy,Power,2018,0.17
+Italy,Power,2019,93.87
+Italy,Power,2020,86.78
+Italy,Power,2021,90.28
+Italy,Power,2022,101.43
+Italy,Power,2023,33.14
+Italy,Residential,2018,0.39
+Italy,Residential,2019,74.95
+Italy,Residential,2020,74.26
+Italy,Residential,2021,77.71
+Italy,Residential,2022,72.72
+Italy,Residential,2023,39.63
+Japan,Domestic aviation,2018,0.03
+Japan,Domestic aviation,2019,9.02
+Japan,Domestic aviation,2020,6.50
+Japan,Domestic aviation,2021,6.55
+Japan,Domestic aviation,2022,9.16
+Japan,Domestic aviation,2023,3.87
+Japan,Ground transport,2018,0.49
+Japan,Ground transport,2019,178.10
+Japan,Ground transport,2020,167.41
+Japan,Ground transport,2021,172.21
+Japan,Ground transport,2022,179.12
+Japan,Ground transport,2023,74.92
+Japan,Industry,2018,0.51
+Japan,Industry,2019,268.81
+Japan,Industry,2020,241.05
+Japan,Industry,2021,254.43
+Japan,Industry,2022,254.27
+Japan,Industry,2023,100.99
+Japan,International aviation,2018,0.05
+Japan,International aviation,2019,19.58
+Japan,International aviation,2020,8.70
+Japan,International aviation,2021,8.37
+Japan,International aviation,2022,9.37
+Japan,International aviation,2023,5.63
+Japan,Power,2018,1.30
+Japan,Power,2019,524.46
+Japan,Power,2020,517.09
+Japan,Power,2021,497.70
+Japan,Power,2022,517.21
+Japan,Power,2023,190.68
+Japan,Residential,2018,0.60
+Japan,Residential,2019,108.32
+Japan,Residential,2020,108.50
+Japan,Residential,2021,107.44
+Japan,Residential,2022,111.16
+Japan,Residential,2023,58.97
+ROW,Domestic aviation,2018,0.17
+ROW,Domestic aviation,2019,69.29
+ROW,Domestic aviation,2020,40.58
+ROW,Domestic aviation,2021,49.06
+ROW,Domestic aviation,2022,65.19
+ROW,Domestic aviation,2023,27.87
+ROW,Ground transport,2018,4.51
+ROW,Ground transport,2019,2177.81
+ROW,Ground transport,2020,1878.06
+ROW,Ground transport,2021,2087.30
+ROW,Ground transport,2022,2286.03
+ROW,Ground transport,2023,980.95
+ROW,Industry,2018,8.02
+ROW,Industry,2019,3578.41
+ROW,Industry,2020,3370.95
+ROW,Industry,2021,3566.65
+ROW,Industry,2022,3771.68
+ROW,Industry,2023,1528.75
+ROW,International aviation,2018,0.71
+ROW,International aviation,2019,277.22
+ROW,International aviation,2020,119.67
+ROW,International aviation,2021,139.53
+ROW,International aviation,2022,204.85
+ROW,International aviation,2023,101.44
+ROW,Power,2018,8.57
+ROW,Power,2019,3773.81
+ROW,Power,2020,3532.69
+ROW,Power,2021,3477.92
+ROW,Power,2022,3377.34
+ROW,Power,2023,1332.41
+ROW,Residential,2018,5.55
+ROW,Residential,2019,1015.56
+ROW,Residential,2020,1026.26
+ROW,Residential,2021,992.49
+ROW,Residential,2022,1012.57
+ROW,Residential,2023,502.74
+Russia,Domestic aviation,2018,0.02
+Russia,Domestic aviation,2019,15.43
+Russia,Domestic aviation,2020,13.42
+Russia,Domestic aviation,2021,18.57
+Russia,Domestic aviation,2022,17.19
+Russia,Domestic aviation,2023,6.24
+Russia,Ground transport,2018,0.56
+Russia,Ground transport,2019,232.25
+Russia,Ground transport,2020,222.71
+Russia,Ground transport,2021,232.07
+Russia,Ground transport,2022,227.15
+Russia,Ground transport,2023,94.35
+Russia,Industry,2018,0.57
+Russia,Industry,2019,284.36
+Russia,Industry,2020,287.83
+Russia,Industry,2021,302.50
+Russia,Industry,2022,298.14
+Russia,Industry,2023,118.47
+Russia,International aviation,2018,0.03
+Russia,International aviation,2019,13.28
+Russia,International aviation,2020,5.25
+Russia,International aviation,2021,7.11
+Russia,International aviation,2022,4.80
+Russia,International aviation,2023,2.33
+Russia,Power,2018,2.85
+Russia,Power,2019,840.21
+Russia,Power,2020,980.01
+Russia,Power,2021,1166.55
+Russia,Power,2022,1145.60
+Russia,Power,2023,513.60
+Russia,Residential,2018,0.90
+Russia,Residential,2019,171.86
+Russia,Residential,2020,165.61
+Russia,Residential,2021,181.57
+Russia,Residential,2022,177.05
+Russia,Residential,2023,90.59
+Spain,Domestic aviation,2018,0.01
+Spain,Domestic aviation,2019,5.64
+Spain,Domestic aviation,2020,3.00
+Spain,Domestic aviation,2021,4.37
+Spain,Domestic aviation,2022,5.88
+Spain,Domestic aviation,2023,2.44
+Spain,Ground transport,2018,0.19
+Spain,Ground transport,2019,84.77
+Spain,Ground transport,2020,75.61
+Spain,Ground transport,2021,87.76
+Spain,Ground transport,2022,83.94
+Spain,Ground transport,2023,37.19
+Spain,Industry,2018,0.12
+Spain,Industry,2019,62.25
+Spain,Industry,2020,55.95
+Spain,Industry,2021,60.54
+Spain,Industry,2022,61.79
+Spain,Industry,2023,26.24
+Spain,International aviation,2018,0.05
+Spain,International aviation,2019,24.25
+Spain,International aviation,2020,8.41
+Spain,International aviation,2021,12.06
+Spain,International aviation,2022,21.52
+Spain,International aviation,2023,8.84
+Spain,Power,2018,0.13
+Spain,Power,2019,55.05
+Spain,Power,2020,41.55
+Spain,Power,2021,41.01
+Spain,Power,2022,52.29
+Spain,Power,2023,13.48
+Spain,Residential,2018,0.16
+Spain,Residential,2019,36.70
+Spain,Residential,2020,36.27
+Spain,Residential,2021,37.10
+Spain,Residential,2022,35.40
+Spain,Residential,2023,17.75
+UK,Domestic aviation,2018,0.00
+UK,Domestic aviation,2019,2.41
+UK,Domestic aviation,2020,1.04
+UK,Domestic aviation,2021,1.27
+UK,Domestic aviation,2022,1.79
+UK,Domestic aviation,2023,0.77
+UK,Ground transport,2018,0.24
+UK,Ground transport,2019,113.80
+UK,Ground transport,2020,104.27
+UK,Ground transport,2021,115.30
+UK,Ground transport,2022,119.13
+UK,Ground transport,2023,49.30
+UK,Industry,2018,0.09
+UK,Industry,2019,61.24
+UK,Industry,2020,61.29
+UK,Industry,2021,67.10
+UK,Industry,2022,64.04
+UK,Industry,2023,26.22
+UK,International aviation,2018,0.08
+UK,International aviation,2019,36.13
+UK,International aviation,2020,14.77
+UK,International aviation,2021,14.56
+UK,International aviation,2022,30.19
+UK,International aviation,2023,12.91
+UK,Power,2018,0.19
+UK,Power,2019,76.33
+UK,Power,2020,62.96
+UK,Power,2021,70.94
+UK,Power,2022,72.82
+UK,Power,2023,24.31
+UK,Residential,2018,0.30
+UK,Residential,2019,90.24
+UK,Residential,2020,88.50
+UK,Residential,2021,90.71
+UK,Residential,2022,86.20
+UK,Residential,2023,43.86
+US,Domestic aviation,2018,0.38
+US,Domestic aviation,2019,173.75
+US,Domestic aviation,2020,120.83
+US,Domestic aviation,2021,158.99
+US,Domestic aviation,2022,155.04
+US,Domestic aviation,2023,64.16
+US,Ground transport,2018,3.42
+US,Ground transport,2019,1645.62
+US,Ground transport,2020,1486.62
+US,Ground transport,2021,1592.55
+US,Ground transport,2022,1554.93
+US,Ground transport,2023,639.51
+US,Industry,2018,2.76
+US,Industry,2019,999.46
+US,Industry,2020,953.36
+US,Industry,2021,976.38
+US,Industry,2022,1024.87
+US,Industry,2023,423.58
+US,International aviation,2018,0.19
+US,International aviation,2019,81.64
+US,International aviation,2020,44.12
+US,International aviation,2021,54.00
+US,International aviation,2022,65.96
+US,International aviation,2023,28.33
+US,Power,2018,3.97
+US,Power,2019,1605.10
+US,Power,2020,1437.00
+US,Power,2021,1534.95
+US,Power,2022,1642.93
+US,Power,2023,568.13
+US,Residential,2018,2.64
+US,Residential,2019,605.44
+US,Residential,2020,556.21
+US,Residential,2021,563.49
+US,Residential,2022,603.88
+US,Residential,2023,257.66
+WORLD,Domestic aviation,2018,0.84
+WORLD,Domestic aviation,2019,363.74
+WORLD,Domestic aviation,2020,251.42
+WORLD,Domestic aviation,2021,316.08
+WORLD,Domestic aviation,2022,313.05
+WORLD,Domestic aviation,2023,141.46
+WORLD,Ground transport,2018,14.16
+WORLD,Ground transport,2019,6508.33
+WORLD,Ground transport,2020,5796.88
+WORLD,Ground transport,2021,6307.96
+WORLD,Ground transport,2022,6467.25
+WORLD,Ground transport,2023,2732.93
+WORLD,Industry,2018,25.45
+WORLD,Industry,2019,10747.98
+WORLD,Industry,2020,10475.09
+WORLD,Industry,2021,10985.50
+WORLD,Industry,2022,11118.86
+WORLD,Industry,2023,4528.09
+WORLD,International aviation,2018,1.49
+WORLD,International aviation,2019,632.72
+WORLD,International aviation,2020,277.14
+WORLD,International aviation,2021,327.91
+WORLD,International aviation,2022,473.01
+WORLD,International aviation,2023,216.17
+WORLD,Power,2018,36.83
+WORLD,Power,2019,13526.09
+WORLD,Power,2020,13140.00
+WORLD,Power,2021,14045.70
+WORLD,Power,2022,14191.67
+WORLD,Power,2023,5671.95
+WORLD,Residential,2018,18.38
+WORLD,Residential,2019,3567.80
+WORLD,Residential,2020,3512.78
+WORLD,Residential,2021,3521.26
+WORLD,Residential,2022,3557.23
+WORLD,Residential,2023,1726.43
