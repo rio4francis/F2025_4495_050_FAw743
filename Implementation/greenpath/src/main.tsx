@@ -8,6 +8,10 @@ import Categories from "./pages/Categories";
 import Analytics from "./pages/Analytics";
 import Chat from "./pages/Chat";
 
+
+
+
+
 const router = createBrowserRouter([
   {
     path: "/",

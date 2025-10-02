@@ -8,6 +8,7 @@ import {
 
 type Row = { country: string; sector: string; year: number; value: number };
 
+
 const API_URL = import.meta.env.VITE_API_URL || "";      // when set, use Lambda/API
 const CSV_URL = "/data/agg.csv";                          // fallback when API_URL not set
 
