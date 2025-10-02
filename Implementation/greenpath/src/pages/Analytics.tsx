@@ -11,6 +11,8 @@ type WideRow = { year: number } & Record<string, number | null>;
 
 // CSV must be in /public/data
 const CSV_URL = "/data/agg.csv";
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 
 // Fixed sector order (your 6 sectors)
 const SECTORS = [
@@ -44,6 +46,22 @@ export default function Analytics() {
   useEffect(() => {
     if (didRun.current) return;
     didRun.current = true;
+
+    //Effect of api
+    useEffect(() => {
+  if (!API_URL || !country) return;
+  setLoading(true);
+  const from = 2018, to = 2023;
+  fetch(`${API_URL}/agg?country=${encodeURIComponent(country)}&from=${from}&to=${to}`)
+    .then(r => r.json())
+    .then((rows: Array<{year:number; sector:string; value:number}>) => {
+      const mapped = rows.map(r => ({ country, sector: r.sector, year: r.year, value: r.value }));
+      setRows(mapped);
+      setLoading(false);
+    })
+    .catch((e) => { console.error(e); setErr(String(e)); setLoading(false); });
+}, [API_URL, country]);
+
 
     Papa.parse<AnyRow>(CSV_URL, {
       download: true,
