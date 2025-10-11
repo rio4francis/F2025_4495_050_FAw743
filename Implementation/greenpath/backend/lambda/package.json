@@ -1,0 +1,9 @@
+{
+  "name": "greenpath-api",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.632.0",
+    "pg": "^8.12.0"
+  }
+}
