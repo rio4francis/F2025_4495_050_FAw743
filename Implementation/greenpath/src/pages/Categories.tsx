@@ -255,7 +255,8 @@ export default function Categories() {
       .subtle { opacity: .9; }
 
       .controls { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 12px 0 18px; }
-      .searchRow { display: grid; grid-template-columns: 1fr 240px; gap: 10px; }
+      /* CHANGED: searchRow is now single-column since the button was removed */
+      .searchRow { display: grid; grid-template-columns: 1fr; gap: 10px; }
       @media (max-width: 900px){ .searchRow{ grid-template-columns: 1fr; } }
 
       .input { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: var(--fz-body); outline: none; }
@@ -339,9 +340,7 @@ export default function Categories() {
             onChange={(e) => setQ(e.target.value)}
             aria-label="Search categories"
           />
-          <Link to="/analytics" className="link" aria-label="Open Analytics">
-            Open Analytics →
-          </Link>
+          {/* Removed the “Open Analytics →” button per instructor feedback */}
         </div>
 
         {/* Sector filter */}

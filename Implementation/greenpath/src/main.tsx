@@ -10,6 +10,7 @@ import Categories from "./pages/Categories";
 import CategoryDetail from "./pages/CategoryDetail"; // NEW: detail page
 import Analytics from "./pages/Analytics";
 import Chat from "./pages/Chat";
+import AnalyticsML from "./pages/AnalyticsML";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "categories", element: <Categories /> },
       { path: "categories/:id", element: <CategoryDetail /> }, // NEW: dynamic category route
       { path: "analytics", element: <Analytics /> },
+      { path: "analytics/ml", element: <AnalyticsML />},
       { path: "chat", element: <Chat /> },
     ],
   },
