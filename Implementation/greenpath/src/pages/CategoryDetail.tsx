@@ -53,7 +53,7 @@ export default function CategoryDetail() {
     let cancelled = false;
     (async () => {
       const found: string[] = [];
-      for (let n = 1; n <= 7; n++) {
+      for (let n = 1; n <= 8; n++) {
         let added = false;
         for (const p of patterns(n)) {
           for (const ext of exts) {
