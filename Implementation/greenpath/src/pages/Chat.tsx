@@ -3,8 +3,15 @@ import { useEffect, useRef, useState } from "react";
 
 type Msg = { role: "user" | "assistant" | "system"; content: string };
 
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\?.*$/, "").replace(/\/+$/, "") || "";
+/**
+ * Robust API base:
+ * - Prefer VITE_CHAT_API_URL (if you created it), otherwise VITE_API_URL
+ * - Strip any query string and trailing slashes so we can safely append /chat
+ */
+const RAW_ENV = (import.meta as any).env || {};
+const API_BASE = (RAW_ENV.VITE_CHAT_API_URL || RAW_ENV.VITE_API_URL || "")
+  .replace(/\?.*$/, "")
+  .replace(/\/+$/, "");
 
 export default function Chat() {
   const styles = (
@@ -41,7 +48,11 @@ export default function Chat() {
   );
 
   const [msgs, setMsgs] = useState<Msg[]>([
-    { role: "assistant", content: "Hi! I’m your GreenPath assistant. Ask me about emissions trends or sustainable product choices. You can also pick a prompt on the left." }
+    {
+      role: "assistant",
+      content:
+        "Hi! I’m your GreenPath assistant. Ask me about emissions trends or sustainable product choices. You can also pick a prompt on the left.",
+    },
   ]);
   const [text, setText] = useState("");
   const [country, setCountry] = useState("WORLD");
@@ -54,13 +65,23 @@ export default function Chat() {
 
   const send = async (content: string) => {
     if (!content.trim()) return;
+
     const userMsg: Msg = { role: "user", content };
     setMsgs((m) => [...m, userMsg]);
     setText("");
+
     if (!API_BASE) {
-      setMsgs((m) => [...m, { role: "assistant", content: "API not configured. Set VITE_API_URL to enable chat." }]);
+      setMsgs((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content:
+            "API not configured. Set VITE_API_URL (or VITE_CHAT_API_URL) and rebuild the app.",
+        },
+      ]);
       return;
     }
+
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/chat`, {
@@ -68,14 +89,20 @@ export default function Chat() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           messages: [...msgs, userMsg].slice(-12),
-          context: { country, sector: sector === "(any)" ? undefined : sector, years }
-        })
+          context: { country, sector: sector === "(any)" ? undefined : sector, years },
+        }),
       });
       const data = await res.json();
-      const reply = typeof data?.reply === "string" ? data.reply : "Sorry — I couldn’t generate a response.";
+      const reply =
+        typeof data?.reply === "string"
+          ? data.reply
+          : "Sorry — I couldn’t generate a response.";
       setMsgs((m) => [...m, { role: "assistant", content: reply }]);
     } catch (e: any) {
-      setMsgs((m) => [...m, { role: "assistant", content: `Error: ${e?.message || e}` }]);
+      setMsgs((m) => [
+        ...m,
+        { role: "assistant", content: `Error: ${e?.message || String(e)}` },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -85,7 +112,7 @@ export default function Chat() {
     "Which sector is rising fastest globally?",
     "Give me low-emission tips for home heating.",
     "Compare EV vs. public transit for urban commutes.",
-    "Which countries reduced power sector emissions since 2018?"
+    "Which countries reduced power sector emissions since 2018?",
   ];
 
   return (
@@ -107,15 +134,25 @@ export default function Chat() {
             ))}
           </div>
 
-          <div style={{ marginTop: 12 }} className="label">Context</div>
+          <div style={{ marginTop: 12 }} className="label">
+            Context
+          </div>
           <div className="formRow">
             <label>
               <div className="hint">Country</div>
-              <input className="input" value={country} onChange={(e) => setCountry(e.target.value)} />
+              <input
+                className="input"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              />
             </label>
             <label>
               <div className="hint">Sector</div>
-              <select className="input" value={sector} onChange={(e) => setSector(e.target.value)}>
+              <select
+                className="input"
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
+              >
                 <option>(any)</option>
                 <option>Power</option>
                 <option>Industry</option>
@@ -128,7 +165,12 @@ export default function Chat() {
           </div>
           <label style={{ display: "block", marginTop: 8 }}>
             <div className="hint">Years (free text)</div>
-            <input className="input" value={years} onChange={(e) => setYears(e.target.value)} placeholder="e.g., 2018–2023 or 2020–" />
+            <input
+              className="input"
+              value={years}
+              onChange={(e) => setYears(e.target.value)}
+              placeholder="e.g., 2018–2023 or 2020–"
+            />
           </label>
         </aside>
 
@@ -146,9 +188,22 @@ export default function Chat() {
             )}
             <div ref={endRef} />
           </div>
-          <form className="composer" onSubmit={(e) => { e.preventDefault(); send(text); }}>
-            <input className="input" placeholder="Type your question…" value={text} onChange={(e) => setText(e.target.value)} />
-            <button className="btn" type="submit" disabled={loading}>Send</button>
+          <form
+            className="composer"
+            onSubmit={(e) => {
+              e.preventDefault();
+              send(text);
+            }}
+          >
+            <input
+              className="input"
+              placeholder="Type your question…"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <button className="btn" type="submit" disabled={loading}>
+              Send
+            </button>
           </form>
         </div>
       </div>

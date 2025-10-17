@@ -19,9 +19,10 @@ import UnifiedRankingTable from "../components/UnifiedRankingTable";
 type Row = { country: string; sector: string; year: number; value: number };
 
 /** Normalize VITE_API_URL (no query, no trailing slash) and use as a base */
-const API_BASE = ((import.meta as any).env?.VITE_API_URL || "")
+const API_BASE = ((import.meta as any).env?.VITE_DATA_API_URL || "")
   .replace(/\?.*$/, "")
   .replace(/\/+$/, "");
+
 
 const CSV_URL = "/data/agg.csv";
 
