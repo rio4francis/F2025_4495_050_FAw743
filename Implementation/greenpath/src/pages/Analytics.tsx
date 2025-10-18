@@ -389,6 +389,25 @@ export default function Analytics() {
               </div>
             </div>
           )}
+
+          {/* Explanation note below chart */}
+<div
+  style={{
+    marginTop: "12px",
+    fontSize: "14px",
+    color: "#4b6256",
+    background: "#f6fbf8",
+    border: "1px solid #e4efe8",
+    borderRadius: "8px",
+    padding: "10px 12px",
+    lineHeight: 1.5,
+  }}
+>
+  💡 <strong>Note:</strong> “<strong>WORLD</strong>” represents the total global emissions (sum of all countries and
+  regions). “<strong>ROW</strong>” refers to the <em>Rest of the World</em> — all other countries not listed
+  individually (e.g., smaller economies and developing nations).
+</div>
+
         </div>
       </div>
 
