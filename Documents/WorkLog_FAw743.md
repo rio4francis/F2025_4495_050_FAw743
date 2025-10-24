@@ -42,4 +42,34 @@
 |             |                 | optimized image loading.                                   |                  |
 | 2025-10-07	|   2	            | Improve UI with Standardized fonts and spacing across all  |     54           |
 |             |                 | pages.                                                     |                  |
-| 2025-10-08	|   2	            | Compiled Progress Report 2 and updated work log.           |                  |
+| 2025-10-08	|   2	            | Compiled Progress Report 2 and updated work log.           |     56           |
+| 2025-10-09  |   3	            | Reviewed RootLayout.tsx structure and verified sticky      |     59           |              
+|             |                 | header functionality across pages.                         |                  |
+| 2025-10-10	|   3	            | Finalized responsive navigation pills and added divider    |     62           |
+|             |                 | border for visual separation.                              |                  |
+| 2025-10-11	|   3	            | Built country-ranking table on Analytics page using dynamic|     65           |
+|             |                 | dataset view.                                              |                  |
+| 2025-10-12	|   2	            | Removed duplicate Navbar component and kept RootLayout.tsx |     67           |
+|             |                 | as the sole active layout.                                 |                  |
+| 2025-10-13	|   3	            | Resolved Tailwind and VS Code warnings through workspace   |     70           |
+|             |                 | configuration.                                             |                  |
+| 2025-10-14	|   3	            | Developed the initial Chatbot UI structure with sample     |     73           |
+|             |                 | conversation mock-ups.                                     |                  |
+|2025-10-15	  |   3	            | Integrated Chatbot backend with AWS Lambda and OpenAI API  |     76           |
+|             |                 | for live responses; encountered CORS and response-latency  |                  |
+|             |                 | issues.                                                    |                  |
+| 2025-10-16	|   2	            | Integrated Chatbot backend with AWS Lambda and OpenAI API  |     78           |
+|             |                 | for live responses; encountered CORS and response-latency  |                  |
+|             |                 | issues.(continuation)                                      |                  |
+| 2025-10-17	|   3	            | Fixed CORS errors by adding response headers in Lambda and |     81           |
+|             |                 | used asynchronous promises to reduce latency.              |                  |
+| 2025-10-18  |   3	            | Added typing indicator and scroll persistence to Chatbot   |     84           | 
+|             |                 | UI; resolved duplicate message rendering bug.              |                  |
+| 2025-10-19 	|   3	            | Performed frontend Chatbot tests and enhanced              |     87           |
+|             |                 | responsiveness on mobile devices.                          |                  |
+| 2025-10-20	|   3	            | Implemented fallback messages and user error handling for  |     90           |
+|             |                 | API timeouts.                                              |                  |
+| 2025-10-21	|   2	            | Integrated Chatbot launch button into Home, Categories and |     92           |
+|             |                 | Analytics pages.                                           |                  |
+| 2025-10-22	|   2	            | Created Analytics Machine Learning (AnalyticsML) sub-page  |     94           |
+|             |                 | as a placeholder for future model integration.             |                  |
