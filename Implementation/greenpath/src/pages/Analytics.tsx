@@ -23,7 +23,6 @@ const API_BASE = ((import.meta as any).env?.VITE_DATA_API_URL || "")
   .replace(/\?.*$/, "")
   .replace(/\/+$/, "");
 
-
 const CSV_URL = "/data/agg.csv";
 
 const SECTORS = [
@@ -114,6 +113,43 @@ export default function Analytics() {
         box-shadow: 0 10px 22px rgba(18,124,76,.22);
         border:1px solid rgba(18,124,76,.25);
       }
+
+      /* ---------- RANKING TABLE SKIN (scoped) ---------- */
+      .rankingSkin { padding: 0; }                 /* we’ll put padding on inner wrap */
+      .rankingSkin .tableWrap{
+        overflow-x: auto;
+        border-radius: 16px;
+      }
+      .rankingSkin table{
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-variant-numeric: tabular-nums;
+      }
+      .rankingSkin thead th{
+        background: var(--green);
+        color: #fff;
+        padding: 10px 14px;
+        font-weight: 800;
+        text-align: left;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      .rankingSkin thead th:first-child{ border-top-left-radius: 16px; }
+      .rankingSkin thead th:last-child{ border-top-right-radius: 16px; }
+
+      .rankingSkin tbody td{
+        padding: 10px 14px;
+        border-top: 1px solid var(--border);
+        background: #fff;
+      }
+      .rankingSkin tbody tr:nth-child(even) td{
+        background: var(--panel-soft);
+      }
+      /* Right align numeric columns (3rd onward: Latest, Abs Change, %, Baseline) */
+      .rankingSkin thead th:nth-child(n+3),
+      .rankingSkin tbody td:nth-child(n+3) { text-align: right; }
+      .rankingSkin tbody tr:hover td { background: #f9fbfa; }
     `}</style>
   );
 
@@ -273,7 +309,12 @@ export default function Analytics() {
         the table to view rankings or latest totals and spot high-impact regions before exploring trends.
       </p>
 
-      <UnifiedRankingTable />
+      {/* Wrapped + skinned table */}
+      <div className="panel rankingSkin" style={{ padding: 0 }}>
+        <div className="tableWrap">
+          <UnifiedRankingTable />
+        </div>
+      </div>
 
       {/* Visualization guide */}
       <h2 className="sectionHd">Visualization Guide</h2>
@@ -391,23 +432,22 @@ export default function Analytics() {
           )}
 
           {/* Explanation note below chart */}
-<div
-  style={{
-    marginTop: "12px",
-    fontSize: "14px",
-    color: "#4b6256",
-    background: "#f6fbf8",
-    border: "1px solid #e4efe8",
-    borderRadius: "8px",
-    padding: "10px 12px",
-    lineHeight: 1.5,
-  }}
->
-  💡 <strong>Note:</strong> “<strong>WORLD</strong>” represents the total global emissions (sum of all countries and
-  regions). “<strong>ROW</strong>” refers to the <em>Rest of the World</em> — all other countries not listed
-  individually (e.g., smaller economies and developing nations).
-</div>
-
+          <div
+            style={{
+              marginTop: "12px",
+              fontSize: "14px",
+              color: "#4b6256",
+              background: "#f6fbf8",
+              border: "1px solid #e4efe8",
+              borderRadius: "8px",
+              padding: "10px 12px",
+              lineHeight: 1.5,
+            }}
+          >
+            💡 <strong>Note:</strong> “<strong>WORLD</strong>” represents the total global emissions (sum of all countries and
+            regions). “<strong>ROW</strong>” refers to the <em>Rest of the World</em> — all other countries not listed
+            individually (e.g., smaller economies and developing nations).
+          </div>
         </div>
       </div>
 
