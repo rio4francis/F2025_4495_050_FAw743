@@ -1,5 +1,7 @@
 // src/pages/Chat.tsx
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Msg = { role: "user" | "assistant" | "system"; content: string };
 
@@ -27,7 +29,6 @@ export default function Chat() {
         background:#fff; cursor:pointer; font-weight:800;
       }
 
-      /* Layout switches between full-width chat and two-column */
       .layout{ display:grid; gap:14px; }
       .layout.cols{ grid-template-columns: 320px 1fr; }
       @media (max-width: 980px){ .layout.cols{ grid-template-columns: 1fr; } }
@@ -40,7 +41,6 @@ export default function Chat() {
              padding:6px 10px; cursor:pointer; }
       .chip:hover{ background:#f0f7f3; }
 
-      /* Make chat nearly full viewport height */
       .chat{
         display:flex; flex-direction:column; gap:10px;
         height: calc(100vh - 220px); min-height: 520px;
@@ -49,14 +49,36 @@ export default function Chat() {
             border-radius:14px; padding:10px; }
       .row{ display:flex; gap:10px; margin:8px 0; }
       .me{ justify-content:flex-end; }
-      .bubble{ max-width:75%; padding:10px 12px; border-radius:14px; border:1px solid var(--border); background:#fff; }
-      .mine{ background:linear-gradient(135deg, var(--green), var(--green-2)); color:#fff; border:none; }
+      .bubble{
+        max-width:75%;
+        padding:10px 12px;
+        border-radius:14px;
+        border:1px solid var(--border);
+        background:#fff;
+        white-space: pre-wrap; /* preserve newlines if plain text */
+      }
+      .mine{
+        background:linear-gradient(135deg, var(--green), var(--green-2));
+        color:#fff; border:none;
+      }
       .composer{ display:flex; gap:8px; }
       .input{ flex:1; border:1px solid var(--border); border-radius:12px; padding:10px 12px; }
-      .btn{ padding:10px 14px; border-radius:12px; color:#fff; font-weight:900;
-            background:linear-gradient(135deg, var(--green), var(--green-2));
-            border:1px solid rgba(18,124,76,.2); }
+      .btn{
+        padding:10px 14px; border-radius:12px; color:#fff; font-weight:900;
+        background:linear-gradient(135deg, var(--green), var(--green-2));
+        border:1px solid rgba(18,124,76,.2);
+      }
       .group{ margin-bottom:14px; }
+
+      /* Tidy defaults for markdown rendered inside bubbles */
+      .bubble :where(p){ margin:0 0 .45rem 0; }
+      .bubble :where(ul,ol){ margin:.25rem 0 .6rem 1.25rem; padding:0; }
+      .bubble :where(li){ margin:.18rem 0; }
+      .bubble :where(code,pre){
+        background:#f6fbf8; border:1px solid #e4efe8; border-radius:6px; padding:0 .25rem;
+      }
+      .bubble :where(h1,h2,h3,h4){ margin:.25rem 0; font-size:1em; font-weight:700; }
+      .bubble :where(a){ color:#0e5f3a; text-decoration:underline; }
     `}</style>
   );
 
@@ -69,9 +91,17 @@ export default function Chat() {
   ]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPrompts, setShowPrompts] = useState(false); // START expanded (no left column)
+  const [showPrompts, setShowPrompts] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [msgs, loading]);
+
+  const normalizeForMarkdown = (s: string) =>
+    s
+      // convert "•" bullets into proper markdown bullets
+      .replace(/^(\s*)•/gm, "$1-")
+      // optionally strip heavy bold emphasis if the model overuses it
+      // .replace(/\*\*(.*?)\*\*/g, "$1")
+      .trim();
 
   const send = async (content: string) => {
     if (!content.trim()) return;
@@ -140,7 +170,8 @@ export default function Chat() {
         </button>
       </div>
       <p className="subtle" style={{ marginBottom: 10 }}>
-        Ask any sustainability question or tap a prompt. Answers are concise and focused on practical insight.
+        The Chat Assistant would help to have a better understanding and clearer insights as to what sustainability is all about.
+        Feel free to ask any sustainability question or tap a prompt.
       </p>
 
       <div className={`layout ${showPrompts ? "cols" : ""}`}>
@@ -165,7 +196,15 @@ export default function Chat() {
           <div className="log">
             {msgs.map((m, i) => (
               <div key={i} className={`row ${m.role === "user" ? "me" : ""}`}>
-                <div className={`bubble ${m.role === "user" ? "mine" : ""}`}>{m.content}</div>
+                <div className={`bubble ${m.role === "user" ? "mine" : ""}`}>
+                  {m.role === "assistant" ? (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {normalizeForMarkdown(m.content || "")}
+                    </ReactMarkdown>
+                  ) : (
+                    m.content
+                  )}
+                </div>
               </div>
             ))}
             {loading && (

@@ -23,14 +23,9 @@ export default function UnifiedRankingTable() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // tabs
   const [tab, setTab] = useState<"sector" | "latest">("sector");
-
-  // filters (sector/year)
   const [sector, setSector] = useState<string>("__TOTAL__");
   const [year, setYear] = useState<number | "latest">("latest");
-
-  // search
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -64,7 +59,6 @@ export default function UnifiedRankingTable() {
     };
   }, []);
 
-  // lists
   const years = useMemo(
     () => Array.from(new Set(rows.map((r) => r.year))).sort((a, b) => a - b),
     [rows]
@@ -74,12 +68,11 @@ export default function UnifiedRankingTable() {
     [rows]
   );
 
-  // default latest year
   useEffect(() => {
     if (year === "latest" && years.length) setYear(years[years.length - 1]);
   }, [years, year]);
 
-  /* ---------- Tab: Latest totals (with change since 2018) ---------- */
+  /* ---------- Latest totals + change since 2018 ---------- */
   const latestData: LatestRow[] = useMemo(() => {
     if (!years.length) return [];
     const y0 = 2018;
@@ -110,9 +103,8 @@ export default function UnifiedRankingTable() {
       .sort((a, b) => b.yLatest - a.yLatest);
   }, [rows, years, query]);
 
-  /* ---------- Tab: By Sector & Year ---------- */
+  /* ---------- By sector & year ---------- */
   const sectorYearData: SectorYearRow[] = useMemo(() => {
-    // Guard: year can be "latest" until default is applied
     if (!years.length || year === "latest") return [];
     const map = new Map<string, number>();
     for (const r of rows) {
@@ -205,13 +197,13 @@ export default function UnifiedRankingTable() {
 
           <div className="overflow-x-auto rounded-xl border border-emerald-100 shadow-sm bg-white">
             <table className="min-w-[560px] w-full">
-              <thead className="bg-emerald-50/70">
+              <thead className="bg-emerald-600 text-white border-b border-emerald-700">
                 <tr>
-                  <th className="text-left px-3 py-2 text-emerald-900">#</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">Country</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">#</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">Country</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">
                     {sector === "__TOTAL__" ? "Total" : sector} in {year !== "latest" ? year : ""}
-                    <span className="ml-1 text-emerald-900/60">(GtCO₂)</span>
+                    <span className="ml-1 font-semibold">(GtCO₂)</span>
                   </th>
                 </tr>
               </thead>
@@ -256,13 +248,15 @@ export default function UnifiedRankingTable() {
 
           <div className="overflow-x-auto rounded-xl border border-emerald-100 shadow-sm bg-white">
             <table className="min-w-[760px] w-full">
-              <thead className="bg-emerald-50/70">
+              <thead className="bg-emerald-600 text-white border-b border-emerald-700">
                 <tr>
-                  <th className="text-left px-3 py-2 text-emerald-900">Country</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">Latest Total</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">Abs Change (’18→Latest)</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">% Change</th>
-                  <th className="text-left px-3 py-2 text-emerald-900">2018 Total</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">Country</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">Latest Total</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">
+                    Abs Change (’18→Latest)
+                  </th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">% Change</th>
+                  <th className="text-left px-3 py-2 font-semibold whitespace-nowrap">2018 Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -282,27 +276,34 @@ export default function UnifiedRankingTable() {
                 )}
                 {!loading &&
                   !err &&
-                  latestData.slice(0, 50).map((r) => (
-                    <tr key={r.country} className="border-t border-emerald-100">
-                      <td className="px-3 py-2">{r.country}</td>
-                      <td className="px-3 py-2 font-medium">{fmt(r.yLatest)}</td>
-                      <td
-                        className={`px-3 py-2 ${
-                          r.absChange >= 0 ? "text-red-700" : "text-emerald-700"
-                        }`}
-                      >
-                        {r.absChange >= 0 ? "▲" : "▼"} {fmt(Math.abs(r.absChange))}
-                      </td>
-                      <td
-                        className={`px-3 py-2 ${
-                          r.pctChange >= 0 ? "text-red-700" : "text-emerald-700"
-                        }`}
-                      >
-                        {(r.pctChange * 100).toFixed(1)}%
-                      </td>
-                      <td className="px-3 py-2">{fmt(r.y2018)}</td>
-                    </tr>
-                  ))}
+                  latestData.slice(0, 50).map((r) => {
+                    const isIncrease = r.absChange >= 0;
+                    return (
+                      <tr key={r.country} className="border-t border-emerald-100">
+                        <td className="px-3 py-2">{r.country}</td>
+                        <td className="px-3 py-2 font-medium">{fmt(r.yLatest)}</td>
+
+                        {/* Increase = green, Decrease = red */}
+                        <td
+                          className={`px-3 py-2 ${
+                            isIncrease ? "text-emerald-700" : "text-red-700"
+                          }`}
+                        >
+                          {isIncrease ? "▲" : "▼"} {fmt(Math.abs(r.absChange))}
+                        </td>
+
+                        <td
+                          className={`px-3 py-2 ${
+                            r.pctChange >= 0 ? "text-emerald-700" : "text-red-700"
+                          }`}
+                        >
+                          {(r.pctChange * 100).toFixed(1)}%
+                        </td>
+
+                        <td className="px-3 py-2">{fmt(r.y2018)}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
