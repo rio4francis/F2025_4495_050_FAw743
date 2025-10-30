@@ -13,6 +13,8 @@ const API_BASE =
 export default function Chat() {
   const styles = (
     <style>{`
+      html { scrollbar-gutter: stable both-edges; }
+
       :root{
         --fz-heading: clamp(24px, 3.2vw, 36px);
         --fz-body: clamp(15px, 1.9vw, 16px);
@@ -41,12 +43,16 @@ export default function Chat() {
              padding:6px 10px; cursor:pointer; }
       .chip:hover{ background:#f0f7f3; }
 
+      /* Chat layout */
       .chat{
         display:flex; flex-direction:column; gap:10px;
         height: calc(100vh - 220px); min-height: 520px;
       }
-      .log{ flex:1; overflow:auto; background:var(--panel-soft); border:1px solid var(--border);
-            border-radius:14px; padding:10px; }
+      .log{
+        flex:1; overflow-y:auto; background:var(--panel-soft); border:1px solid var(--border);
+        border-radius:14px; padding:10px;
+        scroll-behavior: smooth;
+      }
       .row{ display:flex; gap:10px; margin:8px 0; }
       .me{ justify-content:flex-end; }
       .bubble{
@@ -55,7 +61,7 @@ export default function Chat() {
         border-radius:14px;
         border:1px solid var(--border);
         background:#fff;
-        white-space: pre-wrap; /* preserve newlines if plain text */
+        white-space: pre-wrap;
       }
       .mine{
         background:linear-gradient(135deg, var(--green), var(--green-2));
@@ -70,7 +76,7 @@ export default function Chat() {
       }
       .group{ margin-bottom:14px; }
 
-      /* Tidy defaults for markdown rendered inside bubbles */
+      /* Markdown cleanup */
       .bubble :where(p){ margin:0 0 .45rem 0; }
       .bubble :where(ul,ol){ margin:.25rem 0 .6rem 1.25rem; padding:0; }
       .bubble :where(li){ margin:.18rem 0; }
@@ -92,16 +98,16 @@ export default function Chat() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPrompts, setShowPrompts] = useState(false);
-  const endRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [msgs, loading]);
+
+  // --- FIX: only scroll the chat log, not the entire page ---
+  const logRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = logRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [msgs, loading]);
 
   const normalizeForMarkdown = (s: string) =>
-    s
-      // convert "•" bullets into proper markdown bullets
-      .replace(/^(\s*)•/gm, "$1-")
-      // optionally strip heavy bold emphasis if the model overuses it
-      // .replace(/\*\*(.*?)\*\*/g, "$1")
-      .trim();
+    s.replace(/^(\s*)•/gm, "$1-").trim();
 
   const send = async (content: string) => {
     if (!content.trim()) return;
@@ -169,9 +175,9 @@ export default function Chat() {
           {showPrompts ? "Hide prompts" : "Show prompts"}
         </button>
       </div>
-      <p className="subtle" style={{ marginBottom: 10 }}>
-        The Chat Assistant would help to have a better understanding and clearer insights as to what sustainability is all about.
-        Feel free to ask any sustainability question or tap a prompt.
+      <p style={{ marginBottom: 10 }}>
+        The Chat Assistant helps you understand sustainability and emissions insights.
+        Feel free to ask any question or tap a prompt.
       </p>
 
       <div className={`layout ${showPrompts ? "cols" : ""}`}>
@@ -193,7 +199,8 @@ export default function Chat() {
         )}
 
         <div className="panel chat">
-          <div className="log">
+          {/* Chat log */}
+          <div ref={logRef} className="log">
             {msgs.map((m, i) => (
               <div key={i} className={`row ${m.role === "user" ? "me" : ""}`}>
                 <div className={`bubble ${m.role === "user" ? "mine" : ""}`}>
@@ -212,9 +219,9 @@ export default function Chat() {
                 <div className="bubble">Thinking…</div>
               </div>
             )}
-            <div ref={endRef} />
           </div>
 
+          {/* Input area */}
           <form
             className="composer"
             onSubmit={(e) => {
