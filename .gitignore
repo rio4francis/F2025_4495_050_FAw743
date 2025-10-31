@@ -2,9 +2,21 @@
 node_modules/
 dist/
 
-# Env files
+# --- Env files ---
+# Ignore only machine/secret locals:
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Allow committed templates/defaults:
+!.env.example
+# Allow a committed dev default:
+!.env.development
+
+# Ignore a plain ".env" by default:
 .env
-.env.*
+
 
 # OS/editor
 .DS_Store
