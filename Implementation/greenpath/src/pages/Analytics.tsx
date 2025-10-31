@@ -1,19 +1,10 @@
 // src/pages/Analytics.tsx
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Papa from "papaparse";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer, BarChart, Bar,
 } from "recharts";
 import UnifiedRankingTable from "../components/UnifiedRankingTable";
 import TopFiveSnapshot from "../components/TopFiveSnapshot";
@@ -21,11 +12,9 @@ import TopFiveSnapshot from "../components/TopFiveSnapshot";
 type Row = { country: string; sector: string; year: number; value: number };
 type CumItem = { country: string; total: number };
 
-/** Normalize VITE_API_URL (no query, no trailing slash) and use as a base */
 const API_BASE = ((import.meta as any).env?.VITE_DATA_API_URL || "")
   .replace(/\?.*$/, "")
   .replace(/\/+$/, "");
-
 const CSV_URL = "/data/agg.csv";
 
 const SECTORS = [
@@ -100,8 +89,6 @@ export default function Analytics() {
       .badge{ width:32px; height:32px; border-radius:999px; display:grid; place-items:center; font-weight:900; color:#fff; background:var(--green); box-shadow:0 8px 18px rgba(18,124,76,.25); margin-bottom:6px; }
       @media (max-width: 900px){ .steps{ grid-template-columns: 1fr; } }
 
-      /* CTA */
-      .cta { display:flex; align-items:center; gap:12px; border:1px dashed var(--border); background:var(--panel); border-radius:14px; padding:14px; }
       .ctaRow { display:flex; align-items:center; justify-content:space-between; gap:12px; }
       .ctaBtn {
         display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; text-decoration:none; color:#fff; font-weight:900;
@@ -121,7 +108,6 @@ export default function Analytics() {
   const [err, setErr] = useState<string | null>(null);
   const didInit = useRef(false);
 
-  // NEW: Top-5 cumulative (all years) for the small table + chart
   const [top5Cum, setTop5Cum] = useState<CumItem[]>([]);
 
   useEffect(() => {
@@ -175,7 +161,6 @@ export default function Analytics() {
           setCountries(cs);
           setLoading(false);
 
-          // Compute Top-5 cumulative (all years) from CSV
           const totals = new Map<string, number>();
           rows.forEach((r) => {
             totals.set(r.country, (totals.get(r.country) || 0) + r.value);
@@ -253,21 +238,19 @@ export default function Analytics() {
     return { min, max, avg };
   }, [wide]);
 
-  const fmt = (n: number) =>
-    n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  const fmt = (n: number) => n.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
   return (
     <section aria-labelledby="analytics-heading" className="pg">
       {styles}
 
       <h1 id="analytics-heading" className="hd">Emissions Analytics</h1>
-
       <p className="subtle" style={{ marginBottom: 12 }}>
         <strong>GreenPath Analytics</strong> provides a clear view of how various sectors and countries
         contribute to global emissions over time, helping you spot high-impact areas and progress.
       </p>
 
-      {/* About the dataset */}
+      {/* 1) About the dataset */}
       <h2 className="sectionHd">About the Dataset</h2>
       <div className="panel" style={{ marginBottom: 10 }}>
         <p className="subtle" style={{ margin: 0 }}>
@@ -279,9 +262,8 @@ export default function Analytics() {
         </p>
       </div>
 
-      {/* NEW: Top-5 Snapshot block (table + chart side-by-side) */}
+      {/* 2) Top-5 snapshot (table + visual) */}
       <div className="grid2_equal">
-        {/* Left: compact table */}
         <div className="panel">
           <h3 className="sectionHd" style={{ marginTop: 0 }}>Top 5 — Table (Cumulative)</h3>
           <p className="subtle" style={{ marginTop: 0 }}>
@@ -309,30 +291,19 @@ export default function Analytics() {
           </div>
         </div>
 
-        {/* Right: colored horizontal bars (highest→lowest) */}
         <div className="panel">
           <h3 className="sectionHd" style={{ marginTop: 0 }}>Top 5 — Visual (Cumulative)</h3>
           <TopFiveSnapshot data={top5Cum} />
         </div>
       </div>
 
-      {/* Ranking overview (existing) */}
-      <h2 className="sectionHd">Ranking Overview</h2>
-      <p className="subtle" style={{ marginTop: 0, marginBottom: 8 }}>
-        Quickly compare countries by total or sector-specific emissions for a selected year. Switch tabs inside
-        the table to view rankings or latest totals and spot high-impact regions before exploring trends.
-      </p>
-
-      <UnifiedRankingTable />
-
-      {/* Visualization guide (existing) */}
+      {/* 3) Visualization guide + How it works + Chart */}
       <h2 className="sectionHd">Visualization Guide</h2>
       <p className="subtle" style={{ marginTop: 0, marginBottom: 0 }}>
         The charts below visualize sector trends for a chosen country (2018–2023). Use Line/Bar to switch
         views and look for turning points or persistent growth—great cues for where sustainable action matters.
       </p>
 
-      {/* How it works (existing) */}
       <h2 className="sectionHd">How it Works</h2>
       <div className="steps" style={{ marginBottom: 18 }}>
         <div className="step">
@@ -352,7 +323,6 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* Controls + Chart (existing) */}
       <div className="grid2">
         <div className="panel">
           <div className="label">Country</div>
@@ -436,13 +406,21 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* CTA to ML sub-page (existing) */}
+      {/* 4) Ranking overview moved AFTER visuals */}
+      <h2 className="sectionHd">Ranking Overview</h2>
+      <p className="subtle" style={{ marginTop: 0, marginBottom: 8 }}>
+        Quickly compare countries by total or sector-specific emissions for a selected year. Switch tabs inside
+        the table to view rankings or latest totals and spot high-impact regions before exploring trends.
+      </p>
+      <UnifiedRankingTable />
+
+      {/* 5) CTA to main ML page */}
       <div className="panel" style={{ marginTop: 16 }}>
         <div className="ctaRow">
           <p className="subtle" style={{ margin: 0 }}>
-            <strong>Would you like to explore more analytics?</strong> Try our upcoming machine-learning analytics to forecast trends and detect emission drivers.
+            <strong>Would you like to explore more analytics?</strong> Open our Machine-Learning Analytics to forecast trends, detect anomalies, cluster countries, and predict sector shares.
           </p>
-          <Link to="/analytics/ml" className="ctaBtn" aria-label="Open ML Analytics">
+          <Link to="/ml" className="ctaBtn" aria-label="Open ML Analytics">
             Open ML Analytics →
           </Link>
         </div>

@@ -1,3 +1,4 @@
+// src/layout/RootLayout.tsx
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
 
@@ -9,7 +10,7 @@ export default function RootLayout() {
     position: "sticky",
     top: 0,
     zIndex: 50,
-    boxShadow: "0 6px 20px rgba(0,0,0,.12)"
+    boxShadow: "0 6px 20px rgba(0,0,0,.12)",
   };
 
   const wrap: React.CSSProperties = {
@@ -17,7 +18,7 @@ export default function RootLayout() {
     margin: "0 auto",
     padding: "16px 24px",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   };
 
   const brand: React.CSSProperties = {
@@ -25,13 +26,13 @@ export default function RootLayout() {
     fontSize: 30,
     letterSpacing: 0.3,
     userSelect: "none",
-    color: "#fff"
+    color: "#fff",
   };
 
   const navWrap: React.CSSProperties = {
     marginLeft: "auto",
     display: "flex",
-    gap: 12
+    gap: 12,
   };
 
   const pillBase: React.CSSProperties = {
@@ -42,37 +43,64 @@ export default function RootLayout() {
     textDecoration: "none",
     borderRadius: 9999,
     border: "1px solid rgba(255,255,255,0.35)",
-    transition: "background .12s ease, border-color .12s ease"
+    transition: "background .12s ease, border-color .12s ease",
   };
 
   const pillActive: React.CSSProperties = {
     background: "rgba(255,255,255,.20)",
-    borderColor: "rgba(255,255,255,.60)"
+    borderColor: "rgba(255,255,255,.60)",
   };
 
   const divider: React.CSSProperties = {
     height: 6,
     width: "100%",
-    background: "rgba(255,255,255,.15)"
+    background: "rgba(255,255,255,.15)",
   };
 
   const styleFor = (active: boolean): React.CSSProperties => ({
     ...pillBase,
-    ...(active ? pillActive : null)
+    ...(active ? pillActive : null),
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(140deg,#fff,#ecf8f2 60%)", color: "#223c2f" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(140deg,#fff,#ecf8f2 60%)",
+        color: "#223c2f",
+      }}
+    >
       {/* ===== HEADER ===== */}
       <header style={bar}>
         <nav aria-label="Primary" style={wrap}>
           <span style={brand}>GreenPath</span>
 
           <div style={navWrap}>
-            <NavLink to="/" end style={({ isActive }) => styleFor(isActive)}>Home</NavLink>
-            <NavLink to="/categories" style={({ isActive }) => styleFor(isActive)}>Categories</NavLink>
-            <NavLink to="/analytics" style={({ isActive }) => styleFor(isActive)}>Analytics</NavLink>
-            <NavLink to="/chat" style={({ isActive }) => styleFor(isActive)}>Chat</NavLink>
+            <NavLink to="/" end style={({ isActive }) => styleFor(isActive)}>
+              Home
+            </NavLink>
+            <NavLink
+              to="/categories"
+              style={({ isActive }) => styleFor(isActive)}
+            >
+              Categories
+            </NavLink>
+            <NavLink
+              to="/analytics"
+              style={({ isActive }) => styleFor(isActive)}
+            >
+              Analytics
+            </NavLink>
+            {/* NEW: ML Analytics as a main page/pill beside Analytics */}
+            <NavLink
+              to="/analyticsml"
+              style={({ isActive }) => styleFor(isActive)}
+            >
+              ML Analytics
+            </NavLink>
+            <NavLink to="/chat" style={({ isActive }) => styleFor(isActive)}>
+              Chat
+            </NavLink>
           </div>
         </nav>
         <div style={divider} />
@@ -83,15 +111,34 @@ export default function RootLayout() {
       </header>
 
       {/* ===== MAIN ===== */}
-      <main style={{ maxWidth: 1200, margin: "24px auto 0", padding: "0 24px" }} role="main">
+      <main
+        style={{ maxWidth: 1200, margin: "24px auto 0", padding: "0 24px" }}
+        role="main"
+      >
         <Outlet />
       </main>
 
       {/* ===== FOOTER ===== */}
-      <footer style={{ maxWidth: 1200, margin: "40px auto 0", padding: "24px", borderTop: "1px solid #e4efe8", display: "flex", justifyContent: "space-between", fontSize: 14, color: "#667b6f" }}>
-        <div>© {new Date().getFullYear()} GreenPath — Sustainable Products & Insights</div>
+      <footer
+        style={{
+          maxWidth: 1200,
+          margin: "40px auto 0",
+          padding: "24px",
+          borderTop: "1px solid #e4efe8",
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 14,
+          color: "#667b6f",
+        }}
+      >
+        <div>
+          © {new Date().getFullYear()} GreenPath — Sustainable Products &
+          Insights
+        </div>
         <nav style={{ display: "flex", gap: 12 }}>
           <NavLink to="/analytics">Analytics</NavLink>
+          {/* NEW: footer link */}
+          <NavLink to="/analyticsml">ML Analytics</NavLink>
           <NavLink to="/categories">Categories</NavLink>
           <NavLink to="/chat">Chat</NavLink>
         </nav>

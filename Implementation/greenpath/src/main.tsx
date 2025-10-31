@@ -1,16 +1,20 @@
 // src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import "./index.css";
 import RootLayout from "./layout/RootLayout";
 
 import Home from "./pages/Home";
 import Categories from "./pages/Categories";
-import CategoryDetail from "./pages/CategoryDetail"; // NEW: detail page
+import CategoryDetail from "./pages/CategoryDetail";
 import Analytics from "./pages/Analytics";
-import Chat from "./pages/Chat";
 import AnalyticsML from "./pages/AnalyticsML";
+import Chat from "./pages/Chat";
 
 const router = createBrowserRouter([
   {
@@ -19,9 +23,15 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "categories", element: <Categories /> },
-      { path: "categories/:id", element: <CategoryDetail /> }, // NEW: dynamic category route
+      { path: "categories/:id", element: <CategoryDetail /> },
       { path: "analytics", element: <Analytics /> },
-      { path: "analytics/ml", element: <AnalyticsML />},
+
+      // NEW: Top-level ML Analytics page
+      { path: "analyticsml", element: <AnalyticsML /> },
+
+      // Legacy redirect from the old nested path to the new top-level route
+      { path: "analytics/ml", element: <Navigate to="/analyticsml" replace /> },
+
       { path: "chat", element: <Chat /> },
     ],
   },
