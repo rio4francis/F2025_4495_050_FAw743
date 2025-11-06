@@ -19,7 +19,8 @@
 | 2025-09-22  |   1             | Set up my GitHub Desktop workflow and uploaded the         |    19.5          |
 |             |                 | Implementation/greenpath codes.                            |                  |
 | 2025-09-24  |   2             | Prepared Progress Report 1, then updated work log          |    21.5          |
-| 2025-09-25	|   3	            | Tested AWS Lambda and DB connectivity using Secrets        |    24.5          |                          |             |                 | Manager and also verified the JSON responses.              |                  |
+| 2025-09-25	|   3	            | Tested AWS Lambda and DB connectivity using Secrets        |    24.5          |            
+|             |                 | Manager and also verified the JSON responses.              |                  |
 | 2025-09-26	|   2	            | Fixed API 500 errors by correcting VITE_API_URL then added |     26.5         |
 |             |                 | CORS headers in Lambda.                                    |                  | 
 | 2025-09-27	|   1	            | Cleaning of the Emission dataset and combining the sector  |     27.5         |
@@ -73,3 +74,32 @@
 |             |                 | Analytics pages.                                           |                  |
 | 2025-10-22	|   2	            | Created Analytics Machine Learning (AnalyticsML) sub-page  |     94           |
 |             |                 | as a placeholder for future model integration.             |                  |
+| 2025-10-23  |   3             | Rearranged layout of Analytics page, moved the             |     97           |
+|             |                 | visualizations above the overall ranking table for better  |                  |
+|             |                 | readability.                                               |                  |
+| 2025-10-24  |   3             | Adjusted component structure to enhance rendering flow and |     100          |
+|             |                 | reduce overlapping between charts and ranking tables.      |                  |
+| 2025-10-25  |   3             | Fixed scroll behavior on Chat page: chat window now auto-  |     103          |
+|             |                 | adjusts to message height without screen jump during chat  |                  |
+| 2025-10-26  |   3             | Enhanced Chatbot response alignment with the dataset;      |     106          |
+|             |                 | improved prompt structure for dataset-specific answers.    |                  |
+| 2025-10-27  |   3             | Implemented forecasting logic in AnalyticsML.tsx using     |     109          |
+|             |                 | linear regression approximation for emission trends.       |                  |
+| 2025-10-28  |   3             | Developed anomaly detection feature under AnalyticsML to   |     112          |
+|             |                 | identify irregular data patterns.                          |                  |
+| 2025-10-29  |   3             | Added predictive analysis module in AnalyticsML.tsx for    |     115          |
+|             |                 | country and sector-based emissions.                        |                  |
+| 2025-10-30  |   3             | Implemented clustering visualization under AnalyticsML.tsx |     118          |
+|             |                 | to group countries by emission characteristics.            |                  |
+| 2025-10-31  |   3             | Separated AnalyticsML from Analytics page; configured new  |     121          |
+|             |                 | header link and route for direct navigation.               |                  |
+| 2025-11-01  |   2             | Conducted final integration test of AnalyticsML components |     123          |
+|             |                 | and ensured charts render responsively.                    |                  |
+| 2025-11-02  |   2             | Updated Tailwind and layout alignment to maintain          |     125          | 
+|             |                 | consistent styling across Analytics and AnalyticsML.       |                  |
+| 2025-11-03  |   2             | Validated Chatbot output consistency against sample        |     127          |
+|             |                 | dataset queries.                                           |                  |
+| 2025-11-04  |   2             | Performed bug testing, verified navigation links, and      |     129          |
+|             |                 | ensured visual consistency across pages.                   |                  |
+| 2025-11-05  |   2             | Reviewed overall UI integration, tested ML features, and   |     131          |
+|             |                 | finalized content for Report 4 submission.                 |                  |
