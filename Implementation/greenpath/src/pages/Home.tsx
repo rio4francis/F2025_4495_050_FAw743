@@ -40,6 +40,7 @@ export default function Home() {
           grid-template-columns: 1.1fr 0.9fr;
           gap: 24px;
           align-items: center;
+          margin-bottom: 24px;
         }
 
         .ctaRow {
@@ -74,24 +75,30 @@ export default function Home() {
         .btnGhost:hover { box-shadow: 0 8px 18px rgba(0,0,0,0.06); }
         .btnGhost:active { transform: translateY(1px); }
 
-        /* Carousel wrapper: clean aspect, tidy border radius */
+        /* Carousel wrapper: BIGGER + portrait-friendly area */
         .heroImageWrap {
           position: relative;
           border-radius: 18px;
           overflow: hidden;
           box-shadow: 0 18px 40px rgba(0,0,0,0.08);
-          aspect-ratio: 16 / 9;
-          min-height: 260px;
           background: #e9f6ef;
+          width: 100%;
+          max-width: 420px;      /* bigger box */
+          height: 420px;         /* tall so your display picture fits fully */
+          margin-left: auto;     /* keep it nicely aligned on desktop */
+          margin-right: 0;
         }
-        /* Image fills nicely; choose 'cover' for edge-to-edge look */
+
+        /* Image fills nicely without cropping your DP */
         .heroImage {
           width: 100%;
           height: 100%;
-          object-fit: cover;      /* change to 'contain' if you want no cropping */
+          object-fit: contain;   /* show full picture without cutting edges */
           object-position: center;
           display: block;
+          background-color: #e9f6ef;
         }
+
         .carouselTrack { position: relative; width: 100%; height: 100%; }
         .carouselSlide {
           position: absolute; inset: 0; opacity: 0;
@@ -120,21 +127,26 @@ export default function Home() {
 
         /* About section styling */
         .aboutSection {
-          margin-top: 28px;
+          margin-top: 10px;
           background: #ffffff;
           border: 1px solid #e6efe9;
           border-radius: 16px;
           padding: 18px;
           box-shadow: 0 10px 26px rgba(0,0,0,0.06);
         }
-        .aboutTitle { composes: heading; } /* for dev tools clarity */
 
         /* “How it works” */
-        .sectionTitle { composes: heading; }
+        .sectionTitle {
+          font-size: var(--fz-heading);
+          color: var(--clr-heading);
+          font-weight: 900;
+          margin: 24px 0 10px;
+        }
         .steps {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 16px;
+          margin-top: 8px;
         }
         .step {
           background: #f6fbf8;
@@ -166,7 +178,16 @@ export default function Home() {
 
         @media (max-width: 900px) {
           .hero { grid-template-columns: 1fr; }
+          .heroImageWrap {
+            margin: 0 auto;
+            max-width: 360px;
+            height: 360px;
+          }
           .steps { grid-template-columns: 1fr; }
+          .ctaPanel {
+            flex-direction: column;
+            align-items: flex-start;
+          }
         }
       `}</style>
 
@@ -176,26 +197,40 @@ export default function Home() {
           <div>
             <h1 className="heading">Welcome to GreenPath</h1>
             <p className="subtle">
-              A simple way to explore emissions trends, compare categories, and turn data into
-              actionable sustainability insights.
+              A simple way to explore emissions trends, compare categories, and turn data
+              into actionable sustainability insights. Use interactive analytics, ML-based
+              forecasts, and an AI chatbot to understand the story behind the numbers.
             </p>
+            <div className="ctaRow">
+              <Link to="/analytics" className="btnPrimary">
+                Explore Analytics
+              </Link>
+              <Link to="/chat" className="btnGhost">
+                Chat with GreenPath AI
+              </Link>
+            </div>
           </div>
 
           <ImageCarousel />
         </section>
 
         {/* ABOUT — immediately below hero */}
-        <section className="aboutSection" aria-label="About GreenPath and sustainable products">
+        <section
+          className="aboutSection"
+          aria-label="About GreenPath and sustainable products"
+        >
           <h2 className="heading">About GreenPath & Sustainable Products</h2>
           <p>
-            We believe small choices lead to big change.
-            Our world faces growing environmental challenges—from rising emissions to waste that harms ecosystems—
-            but every sustainable product and every mindful decision is a step toward a healthier planet.
+            We believe small choices lead to big change. Our world faces growing
+            environmental challenges—from rising emissions to waste that harms ecosystems—
+            but every sustainable product and every mindful decision is a step toward a
+            healthier planet.
           </p>
 
           <p>
-            <strong>What is GreenPath?</strong> GreenPath is your guide to exploring sustainable product options
-            and understanding their impact. We provide data-driven insights into emissions, categories, and trends so you can:
+            <strong>What is GreenPath?</strong> GreenPath is your guide to exploring
+            sustainable product options and understanding their impact. We provide
+            data-driven insights into emissions, categories, and trends so you can:
           </p>
           <ul style={{ margin: "10px 0 0 18px" }}>
             <li>Make informed choices as a consumer.</li>
@@ -204,21 +239,68 @@ export default function Home() {
           </ul>
 
           <p style={{ marginTop: 10 }}>
-            <strong>Our Mission.</strong> We aim to simplify sustainability. By combining clear data visualizations,
-            product categories, and an AI assistant, GreenPath helps turn complex environmental data into actionable insights.
-            Whether you are a student, policymaker, business, or conscious shopper, GreenPath supports your journey toward a greener lifestyle.
+            <strong>Our Mission.</strong> We aim to simplify sustainability. By combining
+            clear data visualizations, product categories, and an AI assistant, GreenPath
+            helps turn complex environmental data into actionable insights. Whether you are
+            a student, policymaker, business, or conscious shopper, GreenPath supports your
+            journey toward a greener lifestyle.
           </p>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section
+          aria-label="How GreenPath works"
+          style={{ marginTop: 24 }}
+        >
+          <h2 className="sectionTitle">How GreenPath Works</h2>
+          <p className="subtle">
+            Start with real data, explore visual stories, then ask questions in natural
+            language—GreenPath connects all three.
+          </p>
+
+          <div className="steps">
+            <div className="step">
+              <div className="badge">1</div>
+              <div className="stepTitle">Explore the data</div>
+              <p>
+                Open the Analytics page to see how emissions change over time by country
+                and sector. Use charts and rankings to spot trends at a glance.
+              </p>
+            </div>
+
+            <div className="step">
+              <div className="badge">2</div>
+              <div className="stepTitle">Use ML-powered insights</div>
+              <p>
+                Switch to the Analytics ML view to experiment with forecasting, anomaly
+                detection, predictions, and clustering—built on the same underlying data.
+              </p>
+            </div>
+
+            <div className="step">
+              <div className="badge">3</div>
+              <div className="stepTitle">Ask GreenPath AI</div>
+              <p>
+                On the Chat page, ask questions in plain language. The chatbot uses the
+                aggregated dataset to give responses grounded in the data you see.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* CTA PANEL */}
         <section className="ctaPanel" aria-label="Call to action">
           <div>
             <h3>Ready to explore real data?</h3>
-            <p>Jump into Analytics or browse Categories to get started.</p>
+            <p>Jump into Analytics, Analytics ML, or start a conversation with the AI chatbot.</p>
           </div>
           <div className="ctaButtons">
-            <Link to="/analytics" className="btnPrimary">Open Analytics</Link>
-            <Link to="/categories" className="btnGhost">Browse Categories</Link>
+            <Link to="/analytics" className="btnPrimary">
+              Open Analytics
+            </Link>
+            <Link to="/analytics-ml" className="btnGhost">
+              Try Analytics ML
+            </Link>
           </div>
         </section>
       </div>
@@ -226,34 +308,69 @@ export default function Home() {
   );
 }
 
-/* ---------- Carousel component: NO HOVER, caption below image ---------- */
+/* ---------- Carousel component: BIGGER + full-display-picture friendly ---------- */
 function ImageCarousel() {
   const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
-  const slides = React.useMemo(() => [
-    { src: `${base}/details.jpg`,   alt: "Poster showcasing various eco product ideas",   title: "Practical Eco Ideas",    sub: "Reusable and recycled alternatives that work." },
-    { src: `${base}/details2.jpg`,  alt: "Illustrations of sustainable product types",    title: "Explore Categories",     sub: "Drill into product types to find impact hotspots." },
-    { src: `${base}/details3.jpeg`, alt: "Sustainable product considerations chart",      title: "Think Holistically",     sub: "Balance health, environment, workers, and economy." },
-    { src: `${base}/details4.jpeg`, alt: "Unboxing sustainable products",                 title: "Choose Better Products", sub: "Spot greener choices that reduce footprint." },
-    { src: `${base}/details5.jpeg`, alt: "Industrial stacks showing emissions challenges", title: "Understand Emissions",  sub: "See how emissions evolve across countries and years." },
-  ], [base]);
+  const slides = React.useMemo(
+    () => [
+      {
+        src: `${base}/details.jpg`,
+        alt: "Poster showcasing various eco product ideas",
+        title: "Practical Eco Ideas",
+        sub: "Reusable and recycled alternatives that work."
+      },
+      {
+        src: `${base}/details2.jpg`,
+        alt: "Illustrations of sustainable product types",
+        title: "Explore Categories",
+        sub: "Drill into product types to find impact hotspots."
+      },
+      {
+        src: `${base}/details3.jpeg`,
+        alt: "Sustainable product considerations chart",
+        title: "Think Holistically",
+        sub: "Balance health, environment, workers, and economy."
+      },
+      {
+        src: `${base}/details4.jpeg`,
+        alt: "Unboxing sustainable products",
+        title: "Choose Better Products",
+        sub: "Spot greener choices that reduce footprint."
+      },
+      {
+        src: `${base}/details5.jpeg`,
+        alt: "Industrial stacks showing emissions challenges",
+        title: "Understand Emissions",
+        sub: "See how emissions evolve across countries and years."
+      }
+    ],
+    [base]
+  );
 
   // Preload
   React.useEffect(() => {
-    slides.forEach(s => { const im = new Image(); im.src = s.src; });
+    slides.forEach((s) => {
+      const im = new Image();
+      im.src = s.src;
+    });
   }, [slides]);
 
   const [idx, setIdx] = React.useState(0);
 
   // Auto-advance every 2.5s (no pause-on-hover)
   React.useEffect(() => {
-    const t = setInterval(() => setIdx(i => (i + 1) % slides.length), 2500);
+    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 2500);
     return () => clearInterval(t);
   }, [slides.length]);
 
   return (
     <div>
       {/* Image box */}
-      <div className="heroImageWrap" aria-roledescription="carousel" aria-label="GreenPath highlights">
+      <div
+        className="heroImageWrap"
+        aria-roledescription="carousel"
+        aria-label="GreenPath highlights"
+      >
         <div className="carouselTrack" role="group" aria-live="polite">
           {slides.map((s, i) => (
             <img

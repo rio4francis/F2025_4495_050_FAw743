@@ -342,10 +342,10 @@ export default function AnalyticsML() {
       for (const s of SECTORS) {
         const idx = yearsAll.indexOf(year);
         if (idx >= 0) {
-          row[s] = sectorSeries[s][idx] ?? null;     // actual
+          row[s] = sectorSeries[s][idx] ?? null; // actual
           row[`${s}_f`] = null;
         } else {
-          const fIndex = year - last - 1;            // forecast
+          const fIndex = year - last - 1; // forecast
           row[s] = null;
           row[`${s}_f`] = forecasts[s][fIndex] ?? null;
         }
@@ -381,7 +381,6 @@ export default function AnalyticsML() {
     const last = yearsAll[yearsAll.length - 1];
     const prev = yearsAll.length >= 2 ? yearsAll[yearsAll.length - 2] : last;
 
-    // Totals per sector for last & prev year
     const totals = (y: number) =>
       SECTORS.reduce<Record<string, number>>((acc, s) => {
         acc[s] = all
@@ -396,12 +395,14 @@ export default function AnalyticsML() {
     const totPrev = SECTORS.reduce((sum, s) => sum + (prevTotals[s] || 0), 0) || 1;
     const totLast = SECTORS.reduce((sum, s) => sum + (lastTotals[s] || 0), 0) || 1;
 
-    // Drift shares -> normalize -> scale by next total
     const seriesTotals = yearsAll.map((y) =>
       SECTORS.reduce((sum, s) => {
-        return sum + all
-          .filter((r) => r.country === country && r.sector === s && r.year === y)
-          .reduce((a, b) => a + b.value, 0);
+        return (
+          sum +
+          all
+            .filter((r) => r.country === country && r.sector === s && r.year === y)
+            .reduce((a, b) => a + b.value, 0)
+        );
       }, 0)
     );
     const { forecasts } = holtLinear(seriesTotals, 1, 0.4, 0.3);
@@ -541,17 +542,17 @@ export default function AnalyticsML() {
   /* ---------------- Descriptions ---------------- */
 
   const pageLead =
-    "This page adds light-weight machine-learning on the same dataset (2018–2023, GtCO₂). Use it to forecast totals, predict next-year sector shares, flag unusual year-over-year changes, and group countries by similar sector mixes.";
+    "This page applies light-weight machine-learning techniques on the same emissions dataset (2018–2023, GtCO₂). Use it to: forecast total emissions, predict next-year sector splits, flag unusual year-over-year changes, and group countries into clusters with similar sector patterns.";
 
   const tabLead: Record<typeof tab, string> = {
     forecast:
-      "Forecast uses Holt’s linear trend on each sector per country. Solid lines are historical values; dashed segments are 3-year projections.",
+      "Forecast estimates where emissions may be heading, by sector, if recent trends continue. It uses Holt’s linear trend (double exponential smoothing) fitted to each sector’s 2018–2023 history.",
     prediction:
-      "Prediction compares each sector’s latest actual total (2023) against a 2024 value predicted by drifting recent shares (normalized) and scaling by a Holt forecast of the total.",
+      "Prediction focuses on next-year sector totals. It drifts recent sector shares forward, then rescales them to match a Holt-style forecast of the total emissions for the country.",
     anomaly:
-      "Anomalies highlight years where a sector’s year-over-year change is unusual (|z| ≥ 2) relative to its recent pattern.",
+      "Anomalies look for years where a sector’s year-over-year change is unusually large or small compared to its own past changes, using a simple z-score on yearly differences.",
     cluster:
-      "Clustering groups countries by average sector composition (shares sum to 100%). We show Power% vs Ground-transport% with bubble size ~ total emissions.",
+      "Clustering compares countries based on their average sector composition. K-means groups together countries with similar shares across Power, Industry, Transport, Residential, and Aviation.",
   };
 
   /* ---------------- Handlers ---------------- */
@@ -608,8 +609,12 @@ export default function AnalyticsML() {
             </div>
 
             <div className="soft" style={{ marginTop: 10 }}>
-              Solid lines show actuals (2018–2023); dashed extensions are 3-year forecasts per sector. Units:
-              <strong> GtCO₂</strong>.
+              <strong>What this shows:</strong> the line chart projects each sector forward for 3 years, assuming
+              recent trends continue. This helps you see whether emissions are trending up or down and which sectors
+              drive the change.<br />
+              <br />
+              <strong>How it is computed:</strong> we fit Holt’s linear trend model to 2018–2023 totals per sector for{" "}
+              {country}. Solid lines are historical values; dashed extensions are forecasts. Units: <strong>GtCO₂</strong>.
             </div>
           </div>
 
@@ -648,8 +653,8 @@ export default function AnalyticsML() {
               </ResponsiveContainer>
             </div>
             <p className="cap">
-              <strong>Figure – Forecast by sector:</strong> historical emissions (solid) and 3-year projections
-              (dashed) for all sectors in {country}.
+              <strong>Figure – Forecast by sector:</strong> historical emissions (solid) and 3-year projections (dashed)
+              for all sectors in {country}.
             </p>
           </div>
         </div>
@@ -669,11 +674,16 @@ export default function AnalyticsML() {
             </select>
 
             <div className="soft" style={{ marginTop: 10 }}>
-              Bars are grouped by <strong>sector</strong>. For each sector, the{" "}
+              <strong>What this shows:</strong> for each sector, you can compare the latest actual emissions versus a
+              simple prediction for the next year. This highlights which sectors are expected to grow or shrink if
+              recent patterns continue.<br />
+              <br />
+              <strong>How it is computed:</strong> we first forecast total emissions using Holt’s method, then drift
+              recent sector shares forward (based on the last two years) and renormalize them to sum to the forecasted
+              total. Bars are grouped by <strong>sector</strong>: the{" "}
               <span style={{ fontWeight: 700 }}>left bar</span> is <em>2023 actual</em> and the{" "}
-              <span style={{ fontWeight: 700 }}>right bar</span> is the <em>2024 prediction</em> (share drift × Holt
-              total). Sector color stays consistent; predicted bars are lighter with a dashed outline. Units:
-              <strong> GtCO₂</strong>.
+              <span style={{ fontWeight: 700 }}>right bar</span> is the <em>2024 prediction</em>. Units:{" "}
+              <strong>GtCO₂</strong>.
             </div>
           </div>
 
@@ -739,8 +749,13 @@ export default function AnalyticsML() {
             </select>
 
             <div className="soft" style={{ marginTop: 10 }}>
-              We plot <strong>all sectors</strong> for {country}. Red dots flag years with unusual year-over-year
-              changes (|z| ≥ 2). Units: <strong>GtCO₂</strong>.
+              <strong>What this shows:</strong> this view helps you spot “odd” years where emissions for a sector jump
+              or drop much more than usual. Red dots highlight potential anomalies that may deserve further
+              investigation (e.g., policy changes, economic shocks, or data issues).<br />
+              <br />
+              <strong>How it is computed:</strong> we look at year-over-year changes for each sector and calculate a
+              z-score relative to the mean and standard deviation of past changes. Years with |z| ≥ 2 are flagged as
+              anomalies. Units: <strong>GtCO₂</strong>.
             </div>
           </div>
 
@@ -802,9 +817,14 @@ export default function AnalyticsML() {
       {tab === "cluster" && (
         <>
           <p className="soft">
-            Countries are grouped by their <strong>average sectoral composition</strong> (2018–2023). We compute sector
-            shares per country (sum to 100%), run k-means, and visualize <em>Power%</em> vs <em>Ground-transport%</em>.
-            Bubble size hints at total emissions. <strong>Colors distinguish clusters.</strong>
+            <strong>What this shows:</strong> clustering groups countries that “look alike” in terms of their typical
+            sector mix, not their absolute size. This is useful when you want to compare peers with similar Power,
+            Industry, Transport, Residential, and Aviation profiles.<br />
+            <br />
+            <strong>How it is computed:</strong> for each country we average emissions per sector over 2018–2023,
+            convert them into percentage shares that sum to 100%, and then run k-means on these share vectors. The
+            scatter plot shows <em>Power%</em> vs <em>Ground-transport%</em>; bubble size hints at total emissions, and
+            color indicates the cluster.
           </p>
 
           <div className="panel sectionPad" style={{ marginBottom: 12 }}>
