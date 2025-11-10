@@ -237,6 +237,14 @@ export default function Categories() {
     []
   );
 
+  // Build a robust path to bg-leaves.png using BASE_URL
+  const base =
+    ((import.meta as any).env?.BASE_URL as string | undefined) ||
+    (import.meta as any).env?.VITE_BASE_URL ||
+    "/";
+  const basePath = (base || "/").replace(/\/+$/, "");
+  const bgUrl = `${basePath}/bg-leaves.png`;
+
   const styles = (
     <style>{`
       :root{
@@ -250,37 +258,157 @@ export default function Categories() {
         --green: #127c4c;
         --green-2: #14935a;
       }
-      .page { font-size: var(--fz-body); color: var(--clr-body); line-height: 1.6; letter-spacing:.1px; }
-      .heading { font-size: var(--fz-heading); color: var(--clr-heading); font-weight: 900; line-height: 1.2; margin: 0 0 10px 0; }
+
+      .pageInner {
+        max-width: 1120px;
+        margin: 0 auto;
+        background: rgba(246, 251, 248, 0.78);
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.7);
+        box-shadow: 0 20px 55px rgba(0,0,0,0.14);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        padding: 18px 18px 26px;
+      }
+
+      .page {
+        font-size: var(--fz-body);
+        color: var(--clr-body);
+        line-height: 1.6;
+        letter-spacing:.1px;
+      }
+      .heading {
+        font-size: var(--fz-heading);
+        color: var(--clr-heading);
+        font-weight: 900;
+        line-height: 1.2;
+        margin: 0 0 10px 0;
+      }
       .subtle { opacity: .9; }
 
-      .controls { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 12px 0 18px; }
-      /* CHANGED: searchRow is now single-column since the button was removed */
-      .searchRow { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      @media (max-width: 900px){ .searchRow{ grid-template-columns: 1fr; } }
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 12px 0 18px;
+      }
+      .searchRow {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 900px){
+        .pageInner { padding: 14px 12px 22px; }
+      }
 
-      .input { width: 100%; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: var(--fz-body); outline: none; }
-      .input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(18,124,76,.12); }
+      .input {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: var(--fz-body);
+        outline: none;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      }
+      .input::placeholder {
+        color: #7b9787;
+      }
+      .input:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px rgba(18,124,76,.16);
+      }
 
-      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-      .chip { border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; cursor: pointer; background: #fff; }
-      .chip.active { background: #e9f6ef; border-color: #cbe7d9; }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        border: 1px solid rgba(228,239,232,0.9);
+        border-radius: 999px;
+        padding: 6px 11px;
+        cursor: pointer;
+        background: rgba(255,255,255,0.86);
+        font-size: 13px;
+      }
+      .chip.active {
+        background: #e9f6ef;
+        border-color: #c5e3d4;
+      }
 
-      .grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(3, 1fr);
+      }
       @media (max-width: 1100px){ .grid{ grid-template-columns: repeat(2,1fr); } }
       @media (max-width: 700px){ .grid{ grid-template-columns: 1fr; } }
 
-      .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 10px 26px rgba(0,0,0,.06); padding: 16px; display: grid; gap: 10px; transition: box-shadow .15s ease, transform .06s ease; }
+      /* Glass cards */
+      .card {
+        background: rgba(255,255,255,0.92);
+        border: 1px solid rgba(228,239,232,0.85);
+        border-radius: 16px;
+        box-shadow: 0 14px 32px rgba(0,0,0,.10);
+        padding: 14px 14px 12px;
+        display: grid;
+        gap: 8px;
+        transition: box-shadow .18s ease, transform .08s ease, border-color .15s ease;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
       .cardLink { text-decoration: none; color: inherit; }
-      .cardLink:hover .card { box-shadow: 0 16px 36px rgba(0,0,0,.10); transform: translateY(-1px); }
+      .cardLink:hover .card {
+        box-shadow: 0 18px 40px rgba(0,0,0,.16);
+        transform: translateY(-1px);
+        border-color: #c4e0d0;
+      }
 
-      .cardHeader { display:flex; align-items:center; gap: 10px; }
-      .iconWrap { width: 36px; height: 36px; border-radius: 10px; display:grid; place-items:center; background: #e9f6ef; color: #127c4c; border: 1px solid #cfe8dc; }
-      .cardTitle { font-weight: 900; color: var(--clr-heading); font-size: calc(var(--fz-body) + 2px); }
-      .badgeS { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing:.2px; background: linear-gradient(135deg, var(--green), var(--green-2)); color: #fff; padding: 4px 8px; border-radius: 999px; }
+      .cardHeader {
+        display:flex;
+        align-items:center;
+        gap: 10px;
+      }
+      .iconWrap {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display:grid;
+        place-items:center;
+        background: #e9f6ef;
+        color: #127c4c;
+        border: 1px solid #cfe8dc;
+      }
+      .cardTitle {
+        font-weight: 900;
+        color: var(--clr-heading);
+        font-size: calc(var(--fz-body) + 2px);
+      }
+      .badgeS {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing:.18px;
+        background: linear-gradient(135deg, var(--green), var(--green-2));
+        color: #fff;
+        padding: 4px 9px;
+        border-radius: 999px;
+        align-self:flex-start;
+      }
       .tips { margin-left: 18px; }
-      .footerRow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-      .link { display:inline-flex; align-items:center; gap: 6px; padding: 8px 12px; border-radius: 12px; border:1px solid rgba(0,0,0,.06); background: linear-gradient(135deg, var(--green), var(--green-2)); color:#fff; font-weight:800; text-decoration:none; box-shadow: 0 8px 18px rgba(18,124,76,.22); }
+      .footerRow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 2px;
+      }
+      .subLabel {
+        font-weight: 800;
+        color:#124a34;
+        margin: 6px 0 4px;
+      }
     `}</style>
   );
 
@@ -314,123 +442,140 @@ export default function Categories() {
       prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
     );
 
+  // Final background: gradient + leafy image
+  const outerStyle: React.CSSProperties = {
+    minHeight: "calc(100vh - 80px)",
+    padding: "18px 12px 32px",
+    backgroundImage: `linear-gradient(to bottom, rgba(230,245,236,0.9), rgba(212,240,225,0.95)), url("${bgUrl}")`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+    backgroundColor: "#e6f5ec",
+  };
+
   return (
-    <div className="page">
+    <div className="pageShell" style={outerStyle}>
       {styles}
+      <div className="pageInner page">
+        <h1 className="heading">Categories</h1>
 
-      <h1 className="heading">Categories</h1>
+        <p className="subtle">
+          <strong>The GreenPath Categories page</strong> serves as a guide to different areas of sustainable
+          living and production. Each category highlights specific product types or lifestyle choices that
+          directly contribute to lowering emissions and promoting resource efficiency. From renewable energy
+          and efficient transport to circular materials and household innovations, these categories help you
+          connect everyday decisions to measurable environmental impact. By exploring the list, you can
+          identify <strong>practical switches and greener alternatives</strong> that align with personal and
+          global sustainability goals.
+        </p>
 
-      <p className="subtle">
-        <strong>The GreenPath Categories page</strong> serves as a guide to different areas of sustainable
-        living and production. Each category highlights specific product types or lifestyle choices that
-        directly contribute to lowering emissions and promoting resource efficiency. From renewable energy
-        and efficient transport to circular materials and household innovations, these categories help you
-        connect everyday decisions to measurable environmental impact. By exploring the list, you can
-        identify <strong>practical switches and greener alternatives</strong> that align with personal and
-        global sustainability goals.
-      </p>
+        {/* Controls */}
+        <div className="controls">
+          <div className="searchRow">
+            <input
+              className="input"
+              placeholder='Search categories, e.g. “heat pump”, “lighting”, “reusable”…'
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              aria-label="Search categories"
+            />
+          </div>
 
-      {/* Controls */}
-      <div className="controls">
-        <div className="searchRow">
-          <input
-            className="input"
-            placeholder='Search categories, e.g. “heat pump”, “lighting”, “reusable”…'
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            aria-label="Search categories"
-          />
-          {/* Removed the “Open Analytics →” button per instructor feedback */}
+          {/* Sector filter */}
+          <div>
+            <div style={{ fontWeight: 800, color: "#0e5f3a", marginBottom: 6 }}>
+              Filter by sector
+            </div>
+            <div className="chips">
+              {allSectors.map((s) => (
+                <button
+                  type="button"
+                  key={s}
+                  className={`chip ${activeSectors.includes(s) ? "active" : ""}`}
+                  onClick={() => toggleSector(s)}
+                  aria-pressed={activeSectors.includes(s)}
+                  aria-label={`Filter by ${s}`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tag filter */}
+          <div>
+            <div style={{ fontWeight: 800, color: "#0e5f3a", marginBottom: 6 }}>
+              Filter by tags
+            </div>
+            <div className="chips">
+              {allTags.map((t) => (
+                <button
+                  type="button"
+                  key={t}
+                  className={`chip ${activeTags.includes(t) ? "active" : ""}`}
+                  onClick={() => toggleTag(t)}
+                  aria-pressed={activeTags.includes(t)}
+                  aria-label={`Filter by ${t}`}
+                >
+                  #{t}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Sector filter */}
-        <div>
-          <div style={{ fontWeight: 800, color: "#0e5f3a", marginBottom: 6 }}>
-            Filter by sector
-          </div>
-          <div className="chips">
-            {allSectors.map((s) => (
-              <button
-                type="button"
-                key={s}
-                className={`chip ${activeSectors.includes(s) ? "active" : ""}`}
-                onClick={() => toggleSector(s)}
-                aria-pressed={activeSectors.includes(s)}
-                aria-label={`Filter by ${s}`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+        {/* Cards */}
+        <div className="grid">
+          {filtered.map((cat) => (
+            <Link
+              key={cat.id}
+              to={`/categories/${encodeURIComponent(cat.id)}`}
+              className="cardLink"
+              aria-label={`Open details for ${cat.name}`}
+            >
+              <article className="card" aria-labelledby={`${cat.id}-title`}>
+                <div className="badgeS">{cat.sector}</div>
+                <header className="cardHeader">
+                  <span className="iconWrap">
+                    <SectorIcon sector={cat.sector} />
+                  </span>
+                  <h2 id={`${cat.id}-title`} className="cardTitle">
+                    {cat.name}
+                  </h2>
+                </header>
+                <p className="subtle" style={{ margin: 0 }}>{cat.description}</p>
+                <div>
+                  <div className="subLabel">Impact tips</div>
+                  <ul className="tips">
+                    {cat.tips.map((t, i) => <li key={i}>{t}</li>)}
+                  </ul>
+                </div>
+                <div className="footerRow">
+                  <div className="chips" aria-label="Tags">
+                    {cat.tags.map((t) => (
+                      <span key={t} className="chip active">#{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            </Link>
+          ))}
         </div>
 
-        {/* Tag filter */}
-        <div>
-          <div style={{ fontWeight: 800, color: "#0e5f3a", marginBottom: 6 }}>
-            Filter by tags
-          </div>
-          <div className="chips">
-            {allTags.map((t) => (
-              <button
-                type="button"
-                key={t}
-                className={`chip ${activeTags.includes(t) ? "active" : ""}`}
-                onClick={() => toggleTag(t)}
-                aria-pressed={activeTags.includes(t)}
-                aria-label={`Filter by ${t}`}
-              >
-                #{t}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Cards */}
-      <div className="grid">
-        {filtered.map((cat) => (
-          <Link
-            key={cat.id}
-            to={`/categories/${encodeURIComponent(cat.id)}`}
-            className="cardLink"
-            aria-label={`Open details for ${cat.name}`}
+        {!filtered.length && (
+          <div
+            style={{
+              marginTop: 18,
+              border: "1px solid #e4efe8",
+              borderRadius: 12,
+              padding: 14,
+              background: "rgba(255,255,255,0.92)",
+            }}
           >
-            <article className="card" aria-labelledby={`${cat.id}-title`}>
-              <div className="badgeS">{cat.sector}</div>
-              <header className="cardHeader">
-                <span className="iconWrap">
-                  <SectorIcon sector={cat.sector} />
-                </span>
-                <h2 id={`${cat.id}-title`} className="cardTitle">
-                  {cat.name}
-                </h2>
-              </header>
-              <p className="subtle" style={{ margin: 0 }}>{cat.description}</p>
-              <div>
-                <div style={{ fontWeight: 800, color: "#124a34", margin: "6px 0 4px" }}>
-                  Impact tips
-                </div>
-                <ul className="tips">
-                  {cat.tips.map((t, i) => <li key={i}>{t}</li>)}
-                </ul>
-              </div>
-              <div className="footerRow">
-                <div className="chips" aria-label="Tags">
-                  {cat.tags.map((t) => (
-                    <span key={t} className="chip active">#{t}</span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          </Link>
-        ))}
+            No categories match your filters. Try clearing some tags or sector filters.
+          </div>
+        )}
       </div>
-
-      {!filtered.length && (
-        <div style={{ marginTop: 18, border: "1px solid #e4efe8", borderRadius: 12, padding: 14, background: "#fff" }}>
-          No categories match your filters. Try clearing some tags or sector filters.
-        </div>
-      )}
     </div>
   );
 }
