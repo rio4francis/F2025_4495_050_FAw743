@@ -15,9 +15,9 @@ export type Category = {
   id: string;
   name: string;
   sector: Sector;
-  description: string;        // short summary (list page)
-  longDescription: string;    // robust write-up (detail page)
-  heroBase?: string;          // image base name in /public/images/categories (defaults to id)
+  description: string;
+  longDescription: string;
+  heroBase?: string;
   tags: string[];
   tips: string[];
 };
@@ -237,14 +237,6 @@ export default function Categories() {
     []
   );
 
-  // Build a robust path to bg-leaves.png using BASE_URL
-  const base =
-    ((import.meta as any).env?.BASE_URL as string | undefined) ||
-    (import.meta as any).env?.VITE_BASE_URL ||
-    "/";
-  const basePath = (base || "/").replace(/\/+$/, "");
-  const bgUrl = `${basePath}/bg-leaves.png`;
-
   const styles = (
     <style>{`
       :root{
@@ -345,7 +337,6 @@ export default function Categories() {
       @media (max-width: 1100px){ .grid{ grid-template-columns: repeat(2,1fr); } }
       @media (max-width: 700px){ .grid{ grid-template-columns: 1fr; } }
 
-      /* Glass cards */
       .card {
         background: rgba(255,255,255,0.92);
         border: 1px solid rgba(228,239,232,0.85);
@@ -442,15 +433,9 @@ export default function Categories() {
       prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
     );
 
-  // Final background: gradient + leafy image
   const outerStyle: React.CSSProperties = {
     minHeight: "calc(100vh - 80px)",
     padding: "18px 12px 32px",
-    backgroundImage: `linear-gradient(to bottom, rgba(230,245,236,0.9), rgba(212,240,225,0.95)), url("${bgUrl}")`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundAttachment: "fixed",
-    backgroundColor: "#e6f5ec",
   };
 
   return (
