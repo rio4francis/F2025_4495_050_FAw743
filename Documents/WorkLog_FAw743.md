@@ -103,3 +103,18 @@
 |             |                 | ensured visual consistency across pages.                   |                  |
 | 2025-11-05  |   2             | Reviewed overall UI integration, tested ML features, and   |     131          |
 |             |                 | finalized content for Report 4 submission.                 |                  |
+| 2025-11-08	|  1.5	          | Implemented Chat UI redesign by adding bot icon, refactored|     132.5        |                    
+|             |                 | bubble rendering logic.                                    |                  |
+| 2025-11-10	|  1.5	          | Implemented Chat UI redesign by stabilized scroll container|     134          |
+|             |                 | behavior, improved markdown formatting and message parsing |                  |        
+|             |                 | pipeline.                                                  |                  |
+| 2025-11-11	|  1	            | Worked on my project video presentation.                   |     135          |
+| 2025-11-12	|  1	            | Worked on my project video presentation (contd).           |     136          |
+| 2025-11-14	|  1.5	          | Revalidated ML logic including Holt Linear Trend           |     137.5        |
+|             |                 | forecasting, drift-based prediction.                       |                  |
+| 2025-11-17	|  1.5	          | Worked on the Z-score anomaly detection, and k-means       |     139          |
+|             |                 | clustering on normalized sector shares.                    |                  |
+| 2025-11-18	|  1.5	          | Improved Chat assistant dataset alignment: refined prompt  |     140.5        |
+|             |                 | engineering for agg.csv emissions queries.                 |                  |
+| 2025-11-19	|  1.5	          | Tested emission-specific response generation and completed |     142          |
+|             |                 | final UI consistency checks.                               |                  |
