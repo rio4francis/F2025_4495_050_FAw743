@@ -136,10 +136,11 @@ export default function RootLayout() {
           Insights
         </div>
         <nav style={{ display: "flex", gap: 12 }}>
+           <NavLink to="/categories">Categories</NavLink>
           <NavLink to="/analytics">Analytics</NavLink>
           {/* NEW: footer link */}
           <NavLink to="/analyticsml">ML Analytics</NavLink>
-          <NavLink to="/categories">Categories</NavLink>
+         
           <NavLink to="/chat">Chat</NavLink>
         </nav>
       </footer>

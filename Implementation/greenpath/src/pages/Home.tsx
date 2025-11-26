@@ -298,9 +298,7 @@ export default function Home() {
             <Link to="/analytics" className="btnPrimary">
               Open Analytics
             </Link>
-            <Link to="/analytics-ml" className="btnGhost">
-              Try Analytics ML
-            </Link>
+           
           </div>
         </section>
       </div>
